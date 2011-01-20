@@ -33,3 +33,9 @@ indicated were not long enough to constitute a derivative work.
 
 * The file multiboot.h is taken directly from GRUB, with copyright notice intact.
 
+* The current version of ix is always at git://github.com/enkiv2/ix.git
+
+* The current version as of midnight EST is always at 
+  http://namcub.accela-labs.com/projects/ix
+
+

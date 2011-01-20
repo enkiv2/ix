@@ -18,6 +18,7 @@ src: clean
 	ld -nostdlib -Tlink.ld *.o -o image.elf
 
 test: clean src
+	mkdir -p mnt
 	sudo mount -o loop fd.img ./mnt/
 	sudo cp image.elf ./mnt/
 	sudo umount ./mnt/
