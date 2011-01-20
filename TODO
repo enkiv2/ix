@@ -1,0 +1,8 @@
+TODO:
+* determine why it crashes/reboots during the keypress-wait loop
+* fix keyboard support
+* test zzstructor display
+* implement zzstructure navigator
+* implement zzstructure editor
+* add disk support of some kind, so that zzstructures and istream may be saved
+

@@ -1,0 +1,35 @@
+ * #   #
+##  # #
+ #   #
+ #  # #
+####   #####
+
+Ix [n]:
+	1) one who is not able satisfactorily to explain what a Hrung is, nor 
+	why it should choose to collapse on Betelgeuse Seven
+	
+	2) a standalone zigzag implementation for the x86
+
+The build system assumes you have a reasonably new version of gcc, qemu, nasm, 
+and sudo, and that you have a loop device. qemu, sudo, and the loop device are
+used only in 'make test', so if you just want to build the kernel, you only
+need gcc and nasm.
+
+The generated kernel image is called 'image.elf'. It is stored in src/. It
+is a multiboot-compatible elf-format executable.
+
+Notes:
+
+* Several files in this release were taken from or adapted from files from
+a previous OS project, Project XANA. This project was licensed under the 
+GPL v.2. Some of those files were taken from its parent project, OSD
+(also called OCD), by Alexander Panek. That project was under the ZLIB license.
+The files from OSD have their own copyright notice. Those files that are unique
+to Ix may not contain a notice.
+
+* One file was taken from an excerpt from DJGPP, and parts of another were 
+adapted from GRUB. Both projects are licensed under the GPL2. The portions so
+indicated were not long enough to constitute a derivative work.
+
+* The file multiboot.h is taken directly from GRUB, with copyright notice intact.
+
