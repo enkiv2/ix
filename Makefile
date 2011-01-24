@@ -10,7 +10,7 @@ clean:
 	make -C src/ clean
 
 push: clean update
-	git commit
+	git commit -a
 	git push origin master
 
 update:
