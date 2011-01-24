@@ -20,7 +20,7 @@ src: clean
 image: clean src
 	mkdir -p mnt
 	sudo mount -o loop fd.img ./mnt/
-	sudo cp menu.lst ./mnt/boot/grub/menu.cfg
+	sudo cp menu.lst ./mnt/boot/menu.cfg
 	sudo cp image.elf ./mnt/
 	sudo umount ./mnt/
 
