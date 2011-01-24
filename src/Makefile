@@ -17,12 +17,15 @@ src: clean
 	gcc -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o zz.o -I../include/ zz.c
 	ld -nostdlib -Tlink.ld *.o -o image.elf
 
-test: clean src
+image: clean src
 	mkdir -p mnt
 	sudo mount -o loop fd.img ./mnt/
 	sudo cp menu.lst ./mnt/boot/grub/menu.cfg
 	sudo cp image.elf ./mnt/
 	sudo umount ./mnt/
+
+test: image
 	qemu -no-reboot -no-shutdown -fda fd.img
+
 doc:
 	grep '//@' *.c ../include/*.h | sed -e 's/\/\/\@/\n\t/g' | sed -e 's/\:/\t/g' > doc.txt
