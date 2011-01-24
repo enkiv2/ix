@@ -75,11 +75,11 @@ void kmain(unsigned long magic, unsigned long addr) {
 		setattr(0x70);
 		locate(5, 9);
 		kprint("PRESS ANY KEY TO CONTINUE");
-		for (i=0; i<100000; i++) { }
+		for (i=0; i<10000000; i++) { }
 		setattr(0x07);
 		locate(5, 9);
 		kprint("PRESS ANY KEY TO CONTINUE");
-		for (i=0; i<100000; i++) { }
+		for (i=0; i<10000000; i++) { }
 	}
 	kernel_assert(0, "ix_main.c", "84");
 	cls();

@@ -22,7 +22,7 @@ MultibootHeader:
 ; globals
 global entry                    ;
 global gdt_pointer              ;
-
+global gdt
 ; externs
 extern kmain                    ;
 extern flushGDT                 ;
