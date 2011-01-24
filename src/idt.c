@@ -2,7 +2,7 @@
 #include "io.h"
 struct IDTDescr my_idt[0x7ff];
 
-void doidt(int irq, void (*handler)(void)) {
+void doidt(int irq, void (*handler)(void)) { //@ set handler for irq and reload idt
 	asm("cli");
 	asm("sidt my_idt");
 	my_idt[irq].offset_1[0]=(unsigned char)((unsigned int)*handler);

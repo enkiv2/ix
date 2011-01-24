@@ -41,8 +41,8 @@ void kernel_assert(int testarg, const char *file, const char *line)
 	{
 		kernel_assert_clear();
 		
-		kernel_assert_print("xana: assert '", 14, location);
-		location += 14;
+		kernel_assert_print("ix: assert '", 12, location);
+		location += 12;
 		
 		kernel_assert_print(file, kernel_assert_strlen(file), location);
 		location += kernel_assert_strlen(file);

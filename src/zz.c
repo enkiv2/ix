@@ -2,7 +2,7 @@
 #define zz_c
 #include "zz.h"
 
-void display_cells() {
+void display_cells() { //@ displays based on currcell, in xbar form
 	int i;
 	zzcell* curr;
 	zzcell* yneg;
@@ -48,11 +48,12 @@ void display_cells() {
 	write_cell(xpos, offset);
 }
 
-zzcell* get_cell(int id) {
+zzcell* get_cell(int id) { //@
 	return (zzcell*) (cells_begin + (id * sizeof(zzcell)));
 }
 
-void write_cell(zzcell* cell, int limit) {
+void write_cell(zzcell* cell, int limit) { //@ displays a given cell. limit is
+					   //@ the cutoff, and -1 for full file
 	int i;
 	if(limit < 0) {
 		limit = cell->end + limit;

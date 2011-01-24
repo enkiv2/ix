@@ -2,12 +2,12 @@
 #define vga_c
 #include "vga.h"
 unsigned char* video;
-void locate(int x, int y) {
+void locate(int x, int y) { //@ 
 	cursorx=x;
 	cursory=y;
 }
 
-void write(char c) {
+void write(char c) { //@ 
 /*	((vgapair*)screen[cursorx][cursory])->c=c;
 	((vgapair*)screen[cursorx][cursory])->attr=color;
 	cursorx++;
@@ -37,8 +37,8 @@ void write(char c) {
 
 }
 
-void scroll(int numlines) {/*
-	int i, j, k;
+void scroll(int numlines) { //@ not implemented
+/*	int i, j, k;
 	for(i=0; i<numlines; i++) {
 		for(j=1; j<VGAY; j++) {
 			for(k=0; k<VGAX; k++) {
@@ -52,11 +52,11 @@ void scroll(int numlines) {/*
 
 }
 
-void setattr(char attr) {
+void setattr(char attr) { //@ attr is in vga color mode format
 	color = attr;
 }
 
-void kprint(char* c) {
+void kprint(char* c) { //@ 
 	int i=0;
 	while(c[i]>0) {
 		write(c[i]);
@@ -64,7 +64,7 @@ void kprint(char* c) {
 	}
 }
 
-void cls() {
+void cls() { //@ 
 	int i;
 
 	video = (unsigned char *) VGAADDR;

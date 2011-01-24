@@ -2,7 +2,10 @@
 #define kb_c
 #include "kb.h"
 
-void handle_kb() {
+void handle_kb() { //@ keyboard handler converts scancode and puts ascii onto kb_buf
+		   //@ kb_cmd is set to the scancode for a nonprintable character
+		   //@ private variable mode is set to 1 for shift, 2 for control
+		   //@ private variable caps is set for capslock
 	kernel_assert(0, "kb.c" "6");
 	char scan;
 	scan=inportb(kb_port);

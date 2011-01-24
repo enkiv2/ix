@@ -1,7 +1,7 @@
 all: clean src
 
 clean:
-	rm -f *.o image.elf
+	rm -f *.o image.elf doc.txt
 
 src: clean
 	nasm -felf entry.asm -o 00entry.o
@@ -20,7 +20,9 @@ src: clean
 test: clean src
 	mkdir -p mnt
 	sudo mount -o loop fd.img ./mnt/
+	sudo cp menu.lst ./mnt/boot/grub/menu.cfg
 	sudo cp image.elf ./mnt/
 	sudo umount ./mnt/
 	qemu -no-reboot -no-shutdown -fda fd.img
-
+doc:
+	grep '//@' *.c ../include/*.h | sed -e 's/\/\/\@/\n\t/g' | sed -e 's/\:/\t/g' > doc.txt
