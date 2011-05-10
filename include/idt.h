@@ -1,7 +1,10 @@
 #ifndef idt_h
 #define idt_h
+#define MAX_IRQ 255 // this might not be correct
 typedef unsigned short  uint16_t;
 void doidt();
+void default_handler();
+extern void defaulthandler();
 extern void IRQ1();
 struct IDTDescr{
    uint16_t offset_1; // offset bits 0..15

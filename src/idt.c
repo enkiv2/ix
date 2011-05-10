@@ -1,10 +1,11 @@
 #include "idt.h"
 #include "io.h"
+#include "kernel_assert.h"
 struct IDTDescr my_idt[0x7ff];
 struct IDTPtr x;
 void doidt(int irq, void (*handler)(void)) { //@ set handler for irq and reload idt
 	asm("cli");
-	asm("sidt my_idt");
+	//asm("sidt my_idt");
 	my_idt[irq].offset_1=(uint16_t)((unsigned int)*handler);
 	my_idt[irq].offset_2=(uint16_t)(((unsigned int)*handler)>>16);
 	my_idt[irq].zero=0;
@@ -13,7 +14,7 @@ void doidt(int irq, void (*handler)(void)) { //@ set handler for irq and reload 
 	x.size=0x7ff;
 	x.desc=my_idt;
 	asm("lidt my_idt");
-	asm("sti");
+	//asm("sti"); kernel_assert(0, "idt.c", "17");
 	if(irq>=0x20 && irq<0x20+19) {
 		if(irq<0x27) {
 			char c=inportb(0xa1);
@@ -23,5 +24,9 @@ void doidt(int irq, void (*handler)(void)) { //@ set handler for irq and reload 
 			outportb(0x21, c & (~(1<<irq)));
 		}
 	}
+	//asm("sti");
 }
 
+void default_handler() { // default handler
+	asm("iret");
+}

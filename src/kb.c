@@ -26,6 +26,7 @@ void handle_kb() { //@ keyboard handler converts scancode and puts ascii onto kb
 		if(!caps) { mode=0; }
 	}
 	outportb(0x20, 0x20); // tell the kb controller that the handler is done
+	asm("iret");
 }
 
 #endif
