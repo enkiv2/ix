@@ -4,6 +4,7 @@
 #include "kernel_assert.h"
 #include "multiboot.h"
 #include "idt.h"
+#include "system.h"
 
 #define WAIT 100000000
 
@@ -12,11 +13,14 @@ void kmain(unsigned long magic, unsigned long addr) {
 	multiboot_info_t *mbi;
 	mbi = (multiboot_info_t *) addr;
 	kb_buf='\0';	
-	/*for (i=0; i<MAX_IRQ; i++) {
-		doidt(i, defaulthandler);
-	}*/
-	//doidt(0x21, IRQ1);
-	//asm("sti");
+	
+	gdt_install();
+	idt_install();
+	isrs_install();
+	irq_install();
+	keyboard_install();
+	
+	asm("sti");
 
 	locate(0, 0);
 	setattr(0x00); 
@@ -87,10 +91,12 @@ void kmain(unsigned long magic, unsigned long addr) {
 		kprint("PRESS ANY KEY TO CONTINUE");
 		for (i=0; i<WAIT; i++) { }
 	}
-	kernel_assert(0, "ix_main.c", "84");
+	
+	init_cells();
+
 	cls();
 	while(1) {
-		asm("hlt");
+		nav_cells();
 	}
 }
 

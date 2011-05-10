@@ -7,6 +7,10 @@ void locate(int x, int y) { //@
 	cursory=y;
 }
 
+void putch(char c) {
+	write(c);
+}
+
 void write(char c) { //@ 
 /*	((vgapair*)screen[cursorx][cursory])->c=c;
 	((vgapair*)screen[cursorx][cursory])->attr=color;
@@ -54,6 +58,10 @@ void scroll(int numlines) { //@ not implemented
 
 void setattr(char attr) { //@ attr is in vga color mode format
 	color = attr;
+}
+
+void puts(char* c) {
+	kprint(c);
 }
 
 void kprint(char* c) { //@ 

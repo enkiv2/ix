@@ -1,6 +1,7 @@
 #ifndef zz_c
 #define zz_c
 #include "zz.h"
+#include "kb.h"
 
 void display_cells() { //@ displays based on currcell, in xbar form
 	int i;
@@ -10,7 +11,7 @@ void display_cells() { //@ displays based on currcell, in xbar form
 	zzcell* xneg;
 	zzcell* xpos;
 	int offset;
-
+	setattr(0x07);
 	curr=get_cell(currcell);
 	offset=curr->end - curr->start;
 	if(offset > 10 /* max offset is small */ ) {
@@ -37,7 +38,7 @@ void display_cells() { //@ displays based on currcell, in xbar form
 
 	xneg=get_cell(curr->connections[dimx][0]);
 	locate(0, VGAY/2);
-	write_cell(xneg, VGAX/2 - 5);
+	write_cell(xneg, offset);
 
 	xpos=get_cell(curr->connections[dimx][1]);
 	offset=xpos->end - xpos->start;
@@ -46,10 +47,78 @@ void display_cells() { //@ displays based on currcell, in xbar form
 	}
 	locate(VGAX-offset, VGAY/2);
 	write_cell(xpos, offset);
+
+	offset=curr->end - curr->start;
+	if(offset > 70) {
+		offset=70;
+	}
+	locate((VGAX/2) - (offset/2), VGAY/2);
+	setattr(0x02);
+	write_cell(curr, offset);
 }
 
 zzcell* get_cell(int id) { //@
 	return (zzcell*) (cells_begin + (id * sizeof(zzcell)));
+}
+
+void init_cells() {
+	int i;
+	zz_mode=zz_display_mode;
+	zzcell* cell;
+	const char welcomestr[14]="Welcome to Ix";
+	const char helpstr[34]="Help: wasd to navigate, i to edit";
+	for(i=0; i<max_cells; i++) {
+		cell=get_cell(i);
+		cell->start=0;
+		cell->end=0;
+		int j;
+		for(j=0; j<max_dims; j++) {
+			cell->connections[j][0]=0;
+			cell->connections[j][1]=0;
+		}
+	}
+	currcell=0;
+	cell=get_cell(0);
+	cell->start=0;
+	cell->end=14;
+	for(i=0; i<14; i++) {
+		*((char*)((istream_begin)+cell->start + i))=welcomestr[i];
+	}
+	cell->connections[0][0]=1;
+	cell=get_cell(1);
+	cell->start=15;
+	cell->end=49;
+	for(i=0; i<34; i++) {
+		*((char*)((istream_begin)+cell->start+i))=helpstr[i];
+	}
+	
+
+	
+}
+
+void nav_cells() {
+	if(zz_mode == zz_display_mode) {
+		if (kb_buf) cls();
+		switch(kb_buf) {
+			case 'i':
+				zz_mode=zz_edit_mode;
+				break;
+			case 'w':
+				currcell=get_cell(currcell)->connections[dimy][0];
+				break;
+			case 'a':
+				currcell=get_cell(currcell)->connections[dimx][0];
+				break;
+			case 's':
+				currcell=get_cell(currcell)->connections[dimy][1];
+				break;
+			case 'd':
+				currcell=get_cell(currcell)->connections[dimx][1];
+				break;
+		}
+		kb_buf='\0';
+		display_cells();
+	}
 }
 
 void write_cell(zzcell* cell, int limit) { //@ displays a given cell. limit is

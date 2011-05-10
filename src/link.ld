@@ -26,7 +26,7 @@ SECTIONS
     _end = . ;
 
     /* Strip unnecessary stuff */
-    /DISCARD/ : { *(.comment .note .eh_frame) }
+    /DISCARD/ : { *(.comment .note .eh_frame)  } 
 }
 
 

@@ -4,9 +4,14 @@ clean:
 	rm -f *.o image.elf doc.txt
 
 src: clean
-	nasm -felf entry.asm -o 00entry.o
-	nasm -felf  gdt.asm -o gdt.o
-	nasm -felf irq.asm -o irq.o
+	nasm -felf start.asm -o 00entry.o
+	#nasm -felf  gdt.asm -o gdt.o
+	#nasm -felf irq.asm -o irq.o
+	gcc -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o gdt.o -I ../include/ gdt.c
+	gcc -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o isrs.o -I ../include/ isrs.c
+	gcc -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o util.o -I ../include/ util.c
+	gcc -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o irq.o -I ../include/ irq.c
+	gcc -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o timer.o -I ../include/ timer.c
 	gcc -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o idt.o -I../include/ idt.c
 	gcc -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o kernel_assert.o -I../include/ kernel_assert.c
 	gcc -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o kernel_halt.o -I../include/ kernel_halt.s

@@ -1,32 +1,67 @@
-#include "idt.h"
-#include "io.h"
-#include "kernel_assert.h"
-struct IDTDescr my_idt[0x7ff];
-struct IDTPtr x;
-void doidt(int irq, void (*handler)(void)) { //@ set handler for irq and reload idt
-	asm("cli");
-	//asm("sidt my_idt");
-	my_idt[irq].offset_1=(uint16_t)((unsigned int)*handler);
-	my_idt[irq].offset_2=(uint16_t)(((unsigned int)*handler)>>16);
-	my_idt[irq].zero=0;
-	my_idt[irq].selector=0x08;
-	my_idt[irq].type_attr=0xE;
-	x.size=0x7ff;
-	x.desc=my_idt;
-	asm("lidt my_idt");
-	//asm("sti"); kernel_assert(0, "idt.c", "17");
-	if(irq>=0x20 && irq<0x20+19) {
-		if(irq<0x27) {
-			char c=inportb(0xa1);
-			outportb(0xa1, c & (~(1<<irq)));
-		} else {
-			char c=inportb(0x21);
-			outportb(0x21, c & (~(1<<irq)));
-		}
-	}
-	//asm("sti");
+/* bkerndev - Bran's Kernel Development Tutorial
+*  By:   Brandon F. (friesenb@gmail.com)
+*  Desc: Interrupt Descriptor Table management
+*
+*  Notes: No warranty expressed or implied. Use at own risk. */
+#include <system.h>
+
+/* Defines an IDT entry */
+struct idt_entry
+{
+    unsigned short base_lo;
+    unsigned short sel;
+    unsigned char always0;
+    unsigned char flags;
+    unsigned short base_hi;
+} __attribute__((packed));
+
+struct idt_ptr
+{
+    unsigned short limit;
+    unsigned int base;
+} __attribute__((packed));
+
+/* Declare an IDT of 256 entries. Although we will only use the
+*  first 32 entries in this tutorial, the rest exists as a bit
+*  of a trap. If any undefined IDT entry is hit, it normally
+*  will cause an "Unhandled Interrupt" exception. Any descriptor
+*  for which the 'presence' bit is cleared (0) will generate an
+*  "Unhandled Interrupt" exception */
+struct idt_entry idt[256];
+struct idt_ptr idtp;
+
+/* This exists in 'start.asm', and is used to load our IDT */
+extern void idt_load();
+
+/* Use this function to set an entry in the IDT. Alot simpler
+*  than twiddling with the GDT ;) */
+void idt_set_gate(unsigned char num, unsigned long base, unsigned short sel, unsigned char flags)
+{
+    /* The interrupt routine's base address */
+    idt[num].base_lo = (base & 0xFFFF);
+    idt[num].base_hi = (base >> 16) & 0xFFFF;
+
+    /* The segment or 'selector' that this IDT entry will use
+    *  is set here, along with any access flags */
+    idt[num].sel = sel;
+    idt[num].always0 = 0;
+    idt[num].flags = flags;
 }
 
-void default_handler() { // default handler
-	asm("iret");
+/* Installs the IDT */
+void idt_install()
+{
+    /* Sets the special IDT pointer up, just like in 'gdt.c' */
+    idtp.limit = (sizeof (struct idt_entry) * 256) - 1;
+    idtp.base = &idt;
+
+    /* Clear out the entire IDT, initializing it to zeros */
+    memset(&idt, 0, sizeof(struct idt_entry) * 256);
+
+    /* Add any new ISRs to the IDT here using idt_set_gate */
+
+
+
+    /* Points the processor's internal register to the new IDT */
+    idt_load();
 }
