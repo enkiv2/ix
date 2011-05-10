@@ -65,6 +65,11 @@ zzcell* get_cell(int id) { //@
 
 void init_cells() { //@ Makes a clean zzspace with some default cells
 	int i;
+
+	currcell_old=0;
+	currcell=0;
+	maxcell=2;
+
 	zz_mode=zz_display_mode;
 	zzcell* cell;
 	const char welcomestr[14]="Welcome to Ix";
