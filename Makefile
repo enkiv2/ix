@@ -3,7 +3,7 @@ all: src
 test: src
 	make -C src/ test
 
-src:
+src: FORCE
 	make -C src/
 
 clean:
@@ -15,4 +15,6 @@ push: clean update
 
 update:
 	git pull origin master 
+
+FORCE:
 

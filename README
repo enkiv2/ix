@@ -33,6 +33,8 @@ indicated were not long enough to constitute a derivative work.
 
 * The file multiboot.h is taken directly from GRUB, with copyright notice intact.
 
+* Some files are taken from bkerndev, Bren's Kernel Development Tutorial. These files have their ownership notices intact. We are working on replacing all the functionality in these files. 
+
 * The current version of ix is always at git://github.com/enkiv2/ix.git
 
 * The current version as of midnight EST is always at 
