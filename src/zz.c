@@ -11,14 +11,10 @@ void display_cells() { //@ displays based on currcell, in xbar form
 	zzcell* xneg;
 	zzcell* xpos;
 	int offset;
+	
 	setattr(0x07);
+	
 	curr=get_cell(currcell);
-	offset=curr->end - curr->start;
-	if(offset > 10 /* max offset is small */ ) {
-		offset = 10;
-	}
-	scroll(VGAY); /* clear the screen */
-	locate(VGAX/2 - offset/2, VGAY/2);
 
 	yneg=get_cell(curr->connections[dimy][0]);
 	offset=yneg->end - yneg->start;
@@ -37,13 +33,17 @@ void display_cells() { //@ displays based on currcell, in xbar form
 	write_cell(ypos, offset);
 
 	xneg=get_cell(curr->connections[dimx][0]);
+	offset=xneg->end - xneg->start;
+	if(offset > 10) {
+		offset=10;
+	}
 	locate(0, VGAY/2);
 	write_cell(xneg, offset);
 
 	xpos=get_cell(curr->connections[dimx][1]);
 	offset=xpos->end - xpos->start;
-	if(offset > VGAX/2 - 5) {
-		offset=VGAX/2 - 5;
+	if(offset > 10) {
+		offset=10;
 	}
 	locate(VGAX-offset, VGAY/2);
 	write_cell(xpos, offset);
@@ -53,7 +53,7 @@ void display_cells() { //@ displays based on currcell, in xbar form
 		offset=70;
 	}
 	locate((VGAX/2) - (offset/2), VGAY/2);
-	setattr(0x02);
+	setattr(0x20); // Current cell shouldn't just be bigger: it should pop
 	write_cell(curr, offset);
 }
 

@@ -5,8 +5,6 @@ clean:
 
 src: clean
 	nasm -felf start.asm -o 00entry.o
-	#nasm -felf  gdt.asm -o gdt.o
-	#nasm -felf irq.asm -o irq.o
 	gcc -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o gdt.o -I ../include/ gdt.c
 	gcc -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o isrs.o -I ../include/ isrs.c
 	gcc -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o util.o -I ../include/ util.c

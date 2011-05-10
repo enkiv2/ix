@@ -1,8 +1,14 @@
 ;
-; entry.asm
-;
+; start.asm
+; 	from entry.asm
 ;	(c) 2005 by Alexander Panek & Igor Galic
+;	Changed to start.asm in 2011
+;	Concatenated with gdt.asm in 2011
+;	Concatenated with start.asm from Bran's Kernel Tutorial in 2011
+;	Edits (c) 2011 John Ohno
 ;
+
+; entry.asm begins here
 
 ; Multiboot header
 MULTIBOOT_PAGE_ALIGN   equ 1<<0
@@ -34,7 +40,7 @@ entry:
     mov esp, stack + stacksize  ; set up stack pointer
 	
     push eax					; magic value
-	push ebx					; address of the multiboot information structure
+    push ebx					; address of the multiboot information structure
     
     call flushGDT               ; ready?
                                 ; set...
@@ -77,6 +83,8 @@ gdt_pointer:
 ;		(c) 2005 by Alexander Panek & Igor Galic
 ;
 
+; gdt.asm begins here
+
 ; globals
 global flushGDT                 ;
 
@@ -93,22 +101,16 @@ flush:
     ret                         ; go back..obviously.
  
 ; vim: set ts=4 sw=4 et:
+
+; the bkerndev start.asm begins here
+; edited 2011 by John Ohno
+
 ; bkerndev - Bran's Kernel Development Tutorial
 ; By:   Brandon F. (friesenb@gmail.com)
 ; Desc: Kernel entry point, stack, and Interrupt Service Routines.
 ;
 ; Notes: No warranty expressed or implied. Use at own risk.
-;
-; This is the kernel's entry point. We could either call main here,
-; or we can use this to setup the stack or other nice stuff, like
-; perhaps setting up the GDT and segments. Please note that interrupts
-; are disabled at this point: More on interrupts later!
-[BITS 32]
-global start
-
-; This part MUST be 4byte aligned, so we solve that issue using 'ALIGN 4'
 ALIGN 4
-mboot:
 
     
 
