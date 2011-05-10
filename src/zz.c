@@ -3,6 +3,8 @@
 #include "zz.h"
 #include "kb.h"
 
+int zz_menu_choice;
+
 void display_cells() { //@ displays based on currcell, in xbar form
 	int i;
 	zzcell* curr;
@@ -96,6 +98,40 @@ void init_cells() { //@ Makes a clean zzspace with some default cells
 	
 }
 
+void display_editmenu() {
+	locate(0, 0);
+	puts("Edit menu:\nUse wasd to navigate.");
+	
+	if(zz_menu_choice>=5 || zz_menu_choice < 0) {
+		zz_menu_choice=0;
+	}
+	
+	int i;
+	for(i=0; i<5; i++) {
+		locate(10, 5+i);
+		if(i==zz_menu_choice) {
+			setattr(0x20);
+		} else setattr(0x07);
+		switch(i) {
+			case 0:
+				puts("New cell");
+				break;
+			case 1:
+				puts("Connect cell");
+				break;
+			case 2:
+				puts("Edit cell contents");
+				break;
+			case 3:
+				puts("Remove this cell");
+				break;
+			case 4:
+				puts("Nevermind");
+				break;
+		}
+	}
+}
+
 void nav_cells() { 	//@ handle navigation, display, and editing
 			//@ TODO: editing support
 	if(zz_mode == zz_display_mode) {
@@ -118,8 +154,41 @@ void nav_cells() { 	//@ handle navigation, display, and editing
 				break;
 		}
 		kb_buf='\0';
-		display_cells();
+		if(zz_mode==zz_display_mode) display_cells(); // hack
+	} else {
+		if(zz_mode==zz_edit_mode) {
+			if(kb_buf) cls();
+			switch(kb_buf) {
+				case 'w':
+					zz_menu_choice--;
+					cls();
+					kb_buf='\0';
+					display_editmenu();
+					break;
+				case 's':
+					zz_menu_choice++;
+					cls();
+					kb_buf='\0';
+					display_editmenu();
+					break;
+				case 'a':
+					cls();
+					kb_buf='\0';
+					zz_mode=zz_display_mode;
+					break;
+				case 'd':
+				case '\n':
+					cls();
+					kb_buf='\0';
+					zz_mode=zz_selected_mode;
+					break;
+				default:
+					display_editmenu();
+					break;
+			}
+		}
 	}
+
 }
 
 void write_cell(zzcell* cell, int limit) { //@ displays a given cell. limit is

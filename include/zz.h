@@ -9,7 +9,7 @@
 
 #define zz_display_mode 0
 #define zz_edit_mode 1
-
+#define zz_selected_mode 0
 typedef struct zz_t {
 	int connections[max_dims][2];
 	int start; /* refer to istream indices */
