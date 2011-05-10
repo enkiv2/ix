@@ -81,7 +81,6 @@ void keyboard_handler(struct regs *r)
         *  to the above layout to correspond to 'shift' being
         *  held. If shift is held using the larger lookup table,
         *  you would add 128 to the scancode when you look for it */
-        //putch(kbdus[scancode]);
 	kb_buf=kbdus[scancode];
     }
 }

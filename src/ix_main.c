@@ -19,6 +19,7 @@ void kmain(unsigned long magic, unsigned long addr) {
 	isrs_install();
 	irq_install();
 	keyboard_install();
+	timer_install();
 	
 	asm("sti");
 
@@ -41,7 +42,7 @@ void kmain(unsigned long magic, unsigned long addr) {
 	locate(1, 5);
 	write(' ');
 	locate(0, 6);
-	kprint("   ");
+	puts("   ");
 
 	locate(3, 6);
 	write(' ');
@@ -72,23 +73,23 @@ void kmain(unsigned long magic, unsigned long addr) {
 	write(' ');
 	
 	locate(10, 6);
-	kprint("        ");
+	puts("        ");
 
 	locate(0, 7);
 	setattr(0x02);
-	kprint("(c) 2010 John Ohno");
+	puts("(c) 2010 John Ohno");
 
 	setattr(0x07);
 	locate(5, 9);
-	kprint("PRESS ANY KEY TO CONTINUE");
+	puts("PRESS ANY KEY TO CONTINUE");
 	while(kb_buf=='\0') { 
 		setattr(0x70);
 		locate(5, 9);
-		kprint("PRESS ANY KEY TO CONTINUE");
+		puts("PRESS ANY KEY TO CONTINUE");
 		for (i=0; i<WAIT; i++) { }
 		setattr(0x07);
 		locate(5, 9);
-		kprint("PRESS ANY KEY TO CONTINUE");
+		puts("PRESS ANY KEY TO CONTINUE");
 		for (i=0; i<WAIT; i++) { }
 	}
 	

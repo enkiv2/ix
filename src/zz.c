@@ -61,7 +61,7 @@ zzcell* get_cell(int id) { //@
 	return (zzcell*) (cells_begin + (id * sizeof(zzcell)));
 }
 
-void init_cells() {
+void init_cells() { //@ Makes a clean zzspace with some default cells
 	int i;
 	zz_mode=zz_display_mode;
 	zzcell* cell;
@@ -96,7 +96,8 @@ void init_cells() {
 	
 }
 
-void nav_cells() {
+void nav_cells() { 	//@ handle navigation, display, and editing
+			//@ TODO: editing support
 	if(zz_mode == zz_display_mode) {
 		if (kb_buf) cls();
 		switch(kb_buf) {

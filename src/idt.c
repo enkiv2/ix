@@ -31,11 +31,11 @@ struct idt_entry idt[256];
 struct idt_ptr idtp;
 
 /* This exists in 'start.asm', and is used to load our IDT */
-extern void idt_load();
+extern void idt_load(); //@
 
 /* Use this function to set an entry in the IDT. Alot simpler
 *  than twiddling with the GDT ;) */
-void idt_set_gate(unsigned char num, unsigned long base, unsigned short sel, unsigned char flags)
+void idt_set_gate(unsigned char num, unsigned long base, unsigned short sel, unsigned char flags) //@
 {
     /* The interrupt routine's base address */
     idt[num].base_lo = (base & 0xFFFF);
@@ -49,7 +49,7 @@ void idt_set_gate(unsigned char num, unsigned long base, unsigned short sel, uns
 }
 
 /* Installs the IDT */
-void idt_install()
+void idt_install() //@
 {
     /* Sets the special IDT pointer up, just like in 'gdt.c' */
     idtp.limit = (sizeof (struct idt_entry) * 256) - 1;
