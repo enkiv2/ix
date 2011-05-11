@@ -16,5 +16,8 @@ push: clean update
 update:
 	git pull origin master 
 
+doc:
+	sh src/doc.sh > src/doc.txt
+
 FORCE:
 

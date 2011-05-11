@@ -33,7 +33,5 @@ test: image
 install: src
 	sudo cp image.elf /boot/
 
-doc:
-	sh doc.sh > doc.txt
 
 
