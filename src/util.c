@@ -20,7 +20,7 @@ char* itoa(int in, char* buf) {
 	int j, i;
 	for(i=0; in>=pow(10, i); i++);
 	if(in%10) i--;
-	if(in==0) i=1;
+	if(in==0) i=0;
 	buf[i+1]='\0';
 	for(j=0; i>=0; i--){
 		if(in>0) {

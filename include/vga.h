@@ -25,7 +25,8 @@ extern char color;
 
 void locate(int x, int y);
 void write(char c);
-void kprint(char* c);
+void putch(char c);
+void puts(char* c);
 void scroll(int numlines);
 void setattr(char attr);
 void cls();

@@ -5,7 +5,7 @@
 *  Notes: No warranty expressed or implied. Use at own risk. */
 #include <system.h>
 #include <vga.h>
-
+#include <kernel_assert.h>
 void runproc(); // not exported
 
 #define DEFAULT_PRIORITY 1

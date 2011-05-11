@@ -96,7 +96,7 @@ void kmain(unsigned long magic, unsigned long addr) {
 	init_cells();
 
 	cls();
-	renice(spawn(nav_cells), 5);
+	renice(spawn(nav_cells), 6);
 	request_atomicity(0); // begin multithreading
 	
 }

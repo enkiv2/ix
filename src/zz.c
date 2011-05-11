@@ -160,6 +160,9 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 			case 'd':
 				currcell=get_cell(currcell)->connections[dimx][1];
 				break;
+			case 'f':
+				fork();
+				break;
 			case 'm':
 				locate(0, 0);
 				puts("Marked!\n");
