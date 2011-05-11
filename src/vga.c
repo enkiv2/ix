@@ -4,6 +4,32 @@
 #include "system.h"
 
 unsigned char* video;
+
+void shadowbox(int x, int y, int width, int height, char* text, int fg, int bg) {
+	int i, j, k, col, linegoing;
+	col=color;
+	k=0;
+	linegoing=0;
+	for(i=x; i<x+width+1; i++) {
+		for(j=y; j<y+height+1; j++) {
+			locate(i, j);
+			if(i==x+width || j==y+height) {
+				setattr(bg);
+				puts(" ");
+			} else {
+				setattr(fg);
+				if(k<strlen(text)&&!linegoing) {
+					if(text[k]=='\n' || text[k]=='\r') {
+						linegoing=1;
+					} else	putch(text[k]);
+				} else puts(" ");
+				k++;
+			}
+		}
+		linegoing=0;
+	}
+}
+
 void locate(int x, int y) { //@ 
 	cursorx=x;
 	cursory=y;
@@ -33,18 +59,12 @@ void write(char c) { //@
 }
 
 void scroll(int numlines) { //@ not implemented
-/*	int i, j, k;
-	for(i=0; i<numlines; i++) {
-		for(j=1; j<VGAY; j++) {
-			for(k=0; k<VGAX; k++) {
-				((vgapair*)screen[k][j-1])->c=((vgapair*)screen[k][j])->c;
-				((vgapair*)screen[k][j-1])->attr=((vgapair*)screen[k][j])->attr;
-				((vgapair*)screen[k][j])->c=' ';
-				((vgapair*)screen[k][j])->attr=color;
-			}
+	int i, j;
+	for(i=numlines; i<VGAY; i++) {
+		for(j=0; j<VGAX*2; j++) {
+			*(video + (j + (i-numlines) * VGAX * 2))=*(video + (j + i * VGAX * 2));
 		}
-	}*/
-
+	}
 }
 
 void setattr(char attr) { //@ attr is in vga color mode format

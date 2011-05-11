@@ -5,7 +5,7 @@
 #include "system.h"
 
 int zz_menu_choice;
-void relink();
+const inline void relink();
 const void display_cells() { //@ displays based on currcell, in xbar form
 	int i;
 	zzcell* curr;
@@ -105,14 +105,32 @@ void init_cells() { //@ Makes a clean zzspace with some default cells
 }
 
 const void display_editmenu() {
-	locate(0, 0);
-	puts("Edit menu:\nUse wasd to navigate.");
+	
+	int i;
+	/* shadowbox */
+	setattr(0x20);
+	for(i=0;i<12; i++) {
+		locate(0, i);
+		puts("                    ");
+	}
+
+	setattr(0);
+	for(i=1; i<11; i++) {
+		locate(1, i);
+		puts("                  ");
+	}
+
+	setattr(0x02);
+	locate(1, 1);
+	puts("Edit menu:");
+	locate(0, 2);
+	puts("Use wasd to navigate.");
 	
 	if(zz_menu_choice>=5 || zz_menu_choice < 0) {
 		zz_menu_choice=0;
 	}
 	
-	int i;
+	
 	for(i=0; i<5; i++) {
 		locate(10, 5+i);
 		if(i==zz_menu_choice) {
@@ -211,11 +229,12 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 			}
 		} else if(zz_mode==zz_selected_mode) {
 			if(zz_menu_choice==1) relink();
+			zz_mode=zz_display_mode;
 		}
 	}
 }
 
-void relink() {
+const inline void relink() {
 	request_atomicity(1);
 	cls();
 	display_cells();

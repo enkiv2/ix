@@ -23,6 +23,8 @@ extern int cursory;
 extern char color;
 #endif
 
+void shadowbox(int x, int y, int width, int height, char* text, int fg, int bg); //@ console graphics routine
+
 void locate(int x, int y);
 void write(char c);
 void putch(char c);
