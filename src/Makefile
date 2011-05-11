@@ -34,6 +34,6 @@ install: src
 	sudo cp image.elf /boot/
 
 doc:
-	grep '//@' *.c ../include/*.h | sed -e 's/\/\/\@/\n\t/g' | sed -e 's/\:/\t/g' > doc.txt
+	sh doc.sh > doc.txt
 
 
