@@ -7,7 +7,6 @@
 int zz_menu_choice;
 const inline void relink();
 const void display_cells() { //@ displays based on currcell, in xbar form
-	int i;
 	zzcell* curr;
 	zzcell* yneg;
 	zzcell* ypos;
