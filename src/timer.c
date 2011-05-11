@@ -70,30 +70,24 @@ int fork() { //@
 }
 
 
-/* This will keep track of how many ticks that the system
-*  has been running for */
 int timedirty; //@ Time saver for the clock
 int timer_ticks = 0;
 int uptime_secs;
 char timeset[5];
-/* Handles the timer. In this case, it's very simple: We
-*  increment the 'timer_ticks' variable every time the
-*  timer fires. By default, the timer fires 18.222 times
-*  per second. Why 18.222Hz? Some engineer at IBM must've
-*  been smoking something funky */
-void timer_handler(struct regs *r) //@
-{
-    /* Increment our 'tick count' */
-    timer_ticks++;
-    threadticks++;
-    if(!(timer_ticks%(int)JIFFY)) {
-    	uptime_secs++;
-	displaytime(); 
-    }
 
-    if(threadticks>priority[cpid]) {
-    	yield();
-    }
+
+void timer_handler(struct regs *r) { //@ 
+	// Increment our 'tick count' 
+	timer_ticks++;
+	threadticks++;
+	if(!(timer_ticks%(int)JIFFY)) {
+		uptime_secs++;
+		displaytime(); 
+	}
+	
+	if(threadticks>priority[cpid]) {
+		yield();
+	}
 }
 
 void displaytime() { //@ time/status bar
@@ -133,25 +127,22 @@ void displaytime() { //@ time/status bar
 	locate(x, y);
 }
 
-/* This will continuously loop until the given time has
-*  been reached */
-void timer_wait(int ticks) //@
-{
-    unsigned long eticks;
 
-    eticks = timer_ticks + ticks;
-    while(timer_ticks < eticks);
+void timer_wait(int ticks) { //@ Loop for ticks jiffies
+	unsigned long eticks;
+	
+	eticks = timer_ticks + ticks;
+	while(timer_ticks < eticks);
 }
 
-/* Sets up the system clock by installing the timer handler
-*  into IRQ0 */
-void timer_install() //@
-{
-    // setup multithreading
-    atomicity=1;
-    maxpid=-1;
-    cpid=0;
 
-    /* Installs 'timer_handler' to IRQ0 */
-    irq_install_handler(0, timer_handler);
+void timer_install() { //@ Set up the timer handler and multithreading
+	// setup multithreading
+	atomicity=1;
+	maxpid=-1;
+	cpid=0;
+	
+	// Installs 'timer_handler' to IRQ0 
+	irq_install_handler(0, timer_handler);
 }
+

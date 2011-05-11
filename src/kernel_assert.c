@@ -1,7 +1,6 @@
 #include "kernel_assert.h"
 
-void kernel_assert_clear() //@
-{
+void kernel_assert_clear() { //@ 
 	char *fb = (char *)0xB8000;
 	
 	register int i;
@@ -12,8 +11,7 @@ void kernel_assert_clear() //@
 	}
 }
 
-void kernel_assert_print(const char *str, unsigned int len, unsigned int start) //@
-{
+void kernel_assert_print(const char *str, unsigned int len, unsigned int start) { //@
 	char *fb = (char *)(0xB8000 + (start << 1));
 	
 	register int i;
@@ -24,17 +22,14 @@ void kernel_assert_print(const char *str, unsigned int len, unsigned int start) 
 	}
 }
 
-unsigned int kernel_assert_strlen(const char *str) //@
-{
+unsigned int kernel_assert_strlen(const char *str) { //@
 	register unsigned int i = 0;
 	while (str[i] != 0) ++i;
 	
 	return i;
 }
 
-void kernel_assert(int testarg, const char *file, const char *line) //@
-{
-	//char *fb = 0xB8000;
+void kernel_assert(int testarg, const char *file, const char *line) { //@
 	unsigned int location = 0;
 	
 	if (testarg == 0) //false
@@ -59,3 +54,4 @@ void kernel_assert(int testarg, const char *file, const char *line) //@
 		kernel_halt();
 	}
 }
+
