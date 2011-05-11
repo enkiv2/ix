@@ -6,6 +6,7 @@
 #ifndef __SYSTEM_H
 #define __SYSTEM_H
 
+
 typedef int size_t;
 
 /* This defines what the stack looks like after an ISR was running */
@@ -17,21 +18,14 @@ struct regs
     unsigned int eip, cs, eflags, useresp, ss;    
 };
 
-/* MAIN.C */
+/* UTIL.C */
 extern void *memcpy(void *dest, const void *src, size_t count);
 extern void *memset(void *dest, char val, size_t count);
 extern unsigned short *memsetw(unsigned short *dest, unsigned short val, size_t count);
 extern size_t strlen(const char *str);
-/*extern unsigned char inportb (unsigned short _port);
-extern void outportb (unsigned short _port, unsigned char _data);
-*/
+extern int pow(int, int);
+extern char* itoa(int, char*);
 
-/* CONSOLE.C */
-/*extern void init_video(void);
-extern void puts(unsigned char *text);
-extern void putch(unsigned char c);
-extern void cls();
-*/
 /* GDT.C */
 extern void gdt_set_gate(int num, unsigned long base, unsigned long limit, unsigned char access, unsigned char gran);
 extern void gdt_install();
@@ -51,6 +45,13 @@ extern void irq_install();
 /* TIMER.C */
 extern void timer_wait(int ticks);
 extern void timer_install();
+extern void displaytime();
+extern int request_atomicity(int);
+extern void yield();
+extern int spawn(void(*fn)(int));
+extern int fork();
+extern void kill(int);
+extern int renice(int, int);
 
 /* KEYBOARD.C */
 extern void keyboard_install();

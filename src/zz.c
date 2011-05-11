@@ -2,10 +2,11 @@
 #define zz_c
 #include "zz.h"
 #include "kb.h"
+#include "system.h"
 
 int zz_menu_choice;
-
-void display_cells() { //@ displays based on currcell, in xbar form
+void relink();
+const void display_cells() { //@ displays based on currcell, in xbar form
 	int i;
 	zzcell* curr;
 	zzcell* yneg;
@@ -103,7 +104,7 @@ void init_cells() { //@ Makes a clean zzspace with some default cells
 	
 }
 
-void display_editmenu() {
+const void display_editmenu() {
 	locate(0, 0);
 	puts("Edit menu:\nUse wasd to navigate.");
 	
@@ -137,8 +138,10 @@ void display_editmenu() {
 	}
 }
 
-void nav_cells() { 	//@ handle navigation, display, and editing
+const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 			//@ TODO: editing support
+	//while (1) {
+	displaytime();
 	if(zz_mode == zz_display_mode) {
 		if (kb_buf) cls();
 		switch(kb_buf) {
@@ -156,6 +159,18 @@ void nav_cells() { 	//@ handle navigation, display, and editing
 				break;
 			case 'd':
 				currcell=get_cell(currcell)->connections[dimx][1];
+				break;
+			case 'm':
+				locate(0, 0);
+				puts("Marked!\n");
+				get_cell(currcell_old)->connections[dimlink][forelink]=currcell;
+				puts("Linked cell #");
+				puts(itoa(currcell_old, editpane));
+				if(forelink) { puts("poswardly "); } else puts("negwardly ");
+				puts("on dimension ");
+				puts(itoa(dimlink, editpane));
+				puts(" to cell #");
+				puts(itoa(currcell, editpane));
 				break;
 		}
 		kb_buf='\0';
@@ -191,9 +206,42 @@ void nav_cells() { 	//@ handle navigation, display, and editing
 					display_editmenu();
 					break;
 			}
+		} else if(zz_mode==zz_selected_mode) {
+			if(zz_menu_choice==1) relink();
 		}
 	}
+}
 
+void relink() {
+	request_atomicity(1);
+	cls();
+	display_cells();
+	locate(0, 0);
+	puts("Indicate direction of connection, or c to cancel");
+	while(kb_buf!='w' && kb_buf!='a' && kb_buf!='s' && kb_buf!='d' && kb_buf!='c') {
+		timer_wait(1);
+		displaytime();
+	}
+	if(kb_buf=='c') {
+		zz_mode=zz_edit_mode;
+	} else if(kb_buf=='w') {
+		dimlink=dimy;
+		forelink=0;
+	} else if(kb_buf=='a') {
+		dimlink=dimx;
+		forelink=0;
+	} else if(kb_buf=='s') {
+		dimlink=dimy;
+		forelink=1;
+	} else if(kb_buf=='d') {
+		dimlink=dimx;
+		forelink=1;
+	}
+	locate(0, 1);
+	puts("Good! Now, navigate to the cell you want to link to and press 'm' to mark it.");
+	currcell_old = currcell;
+	zz_mode=zz_display_mode;
+	request_atomicity(0);
 }
 
 void write_cell(zzcell* cell, int limit) { //@ displays a given cell. limit is

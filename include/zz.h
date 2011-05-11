@@ -7,6 +7,8 @@
 #define max_cells 1000	//@
 #define cells_begin 0x00100000	//@
 
+#define max_edit_size 512 	//@ C programmer's disease, but this will make things easier without a proper mmu.
+
 #define zz_display_mode 0	//@
 #define zz_edit_mode 1		//@
 #define zz_selected_mode 2	//@
@@ -30,10 +32,11 @@ int dimlink;		//@ cached dimension for linking
 int forelink;		//@ cached posward/backward for linking
 int dimx;		//@ current x dimension
 int dimy;		//@ current y dimension
+char editpane[max_edit_size]; //@ edit buffer
 #endif
-void nav_cells();
+const void nav_cells(int);
 void init_cells();
-void display_cells();
+const void display_cells();
 zzcell* get_cell(int id);
 void write_cell(zzcell* cell, int limit);
 #endif

@@ -5,6 +5,40 @@
 *  Notes: No warranty expressed or implied. Use at own risk. */
 #include <system.h>
 
+int pow(int x, int y) {
+	int r;
+	int i;
+	
+	r=1;
+	for(i=0; i<=y; i++) {
+		r=r*x;
+	}
+	return r;
+}
+
+char* itoa(int in, char* buf) {
+	int j, i;
+	for(i=0; in>=pow(10, i); i++);
+	if(in%10) i--;
+	if(in==0) i=1;
+	buf[i+1]='\0';
+	for(j=0; i>=0; i--){
+		if(in>0) {
+			buf[j]='0'+(in/pow(10, i));
+			in%=pow(10, i);
+		} else {
+			buf[j]='0';
+		}
+		j++;
+	}
+	if(in>10) in%=10;
+	buf[j]='0'+in;
+	j++;
+	buf[j]='\0';
+	return buf;
+}
+
+
 void *memcpy(void *dest, const void *src, size_t count) //@
 {
     const char *sp = (const char *)src;

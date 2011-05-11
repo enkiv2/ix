@@ -1,6 +1,8 @@
 #ifndef vga_c
 #define vga_c
 #include "vga.h"
+#include "system.h"
+
 unsigned char* video;
 void locate(int x, int y) { //@ 
 	cursorx=x;
@@ -58,7 +60,8 @@ void puts(char* c) { //@
 	}
 }
 
-void cls() { //@ 
+void cls() { //@
+	displaytime();
 	int i;
 
 	video = (unsigned char *) VGAADDR;
