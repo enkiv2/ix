@@ -185,12 +185,12 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 				puts("Marked!\n");
 				get_cell(currcell_old)->connections[dimlink][forelink]=currcell;
 				puts("Linked cell #");
-				puts(itoa(currcell_old, editpane));
+				puts(itoa(currcell_old, editbuf));
 				if(forelink) { puts("poswardly "); } else puts("negwardly ");
 				puts("on dimension ");
-				puts(itoa(dimlink, editpane));
+				puts(itoa(dimlink, editbuf));
 				puts(" to cell #");
-				puts(itoa(currcell, editpane));
+				puts(itoa(currcell, editbuf));
 				break;
 		}
 		kb_buf='\0';

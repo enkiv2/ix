@@ -86,7 +86,7 @@ void keyboard_handler(struct regs *r) {
 			if(kb_buf>='a' && kb_buf<='z') {
 				kb_buf=(kb_buf-'a')+'A';
 			}
-			if(!mode&2) mode^=1; // turn off caps
+			if(!(mode&2)) mode^=1; // turn off caps
 		}
 	}
 }

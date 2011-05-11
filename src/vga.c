@@ -2,8 +2,23 @@
 #define vga_c
 #include "vga.h"
 #include "system.h"
+#include "kb.h"
 
 unsigned char* video;
+
+const char* editpane(int x, int y, int width, int height, char* text, int maxlen, int fg, int bg) {
+	if(kb_buf) {
+		if(kb_buf==27) return text; // ESC
+		if(kb_buf=='\b') {
+			text[strlen(text)-1]=0;
+		} else if(strlen(text)<maxlen-1) {
+			text[strlen(text)+1]='\0';
+			text[strlen(text)]=kb_buf;
+			kb_buf=0;
+		} else puts("\a"); // bell
+	}
+	shadowbox(x, y, width, height, text, fg, bg);
+}
 
 void shadowbox(int x, int y, int width, int height, char* text, int fg, int bg) {
 	int i, j, k, col, linegoing;

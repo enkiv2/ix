@@ -32,7 +32,7 @@ int dimlink;		//@ cached dimension for linking
 int forelink;		//@ cached posward/backward for linking
 int dimx;		//@ current x dimension
 int dimy;		//@ current y dimension
-char editpane[max_edit_size]; //@ edit buffer
+char editbuf[max_edit_size]; //@ edit buffer
 #endif
 const void nav_cells(int);
 void init_cells();
