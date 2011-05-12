@@ -93,7 +93,11 @@ void kmain(unsigned long magic, unsigned long addr) {
 		for (i=0; i<WAIT; i++) { }
 	}
 	
-	init_cells();
+	init_cells();	
+
+	kb_buf=0;	
+	shadowbox(5, 5, 20, 10, "Welcome to ix. Use\n   w\na      d\n   s   to navigate, and i to edit", 0x20, 0x02);
+	while (!kb_buf);
 
 	cls();
 	renice(spawn(nav_cells), 6);

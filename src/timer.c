@@ -6,8 +6,8 @@
 #include <system.h>
 #include <vga.h>
 #include <kernel_assert.h>
-void runproc(); // not exported
-
+static void runproc(); // not exported
+void(*proc)(int);
 #define DEFAULT_PRIORITY 1
 #define MAX_PROCESSES 512
 #define JIFFY 18.222 //@ We might change the timer frequency later
@@ -35,10 +35,12 @@ void yield() {      //@ yields timeslice. Also called by process switch
 	}
 }
 
-void runproc() { //@
-	if(cpid>=0 && cpid<=maxpid);
-	void(*proc)(int)=processes[cpid];
-	proc(cpid);
+static void runproc() { //@
+	if(!atomicity && cpid>=0 && cpid<=maxpid) {
+		proc=processes[cpid];
+		outportb(0x20, 0x20);
+		proc(cpid);
+	}
 }
 
 void kill(int pid) { //@

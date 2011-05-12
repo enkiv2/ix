@@ -53,6 +53,7 @@ unsigned char kbdus[128] = {
 
 /* Handles the keyboard interrupt */
 void keyboard_handler(struct regs *r) {
+	request_atomicity(1);
 	unsigned char scancode;
 	
 	/* Read from the keyboard's data buffer */
@@ -89,6 +90,7 @@ void keyboard_handler(struct regs *r) {
 			if(!(mode&2)) mode^=1; // turn off caps
 		}
 	}
+	request_atomicity(0);
 }
 
 /* Installs the keyboard handler into IRQ1 */

@@ -110,13 +110,13 @@ const void display_editmenu() {
 	setattr(0x20);
 	for(i=0;i<12; i++) {
 		locate(0, i);
-		puts("                    ");
+		puts("                        ");
 	}
 
 	setattr(0);
 	for(i=1; i<11; i++) {
-		locate(1, i);
-		puts("                  ");
+		locate(0, i);
+		puts("                       ");
 	}
 
 	setattr(0x02);
@@ -131,7 +131,7 @@ const void display_editmenu() {
 	
 	
 	for(i=0; i<5; i++) {
-		locate(10, 5+i);
+		locate(5, 5+i);
 		if(i==zz_menu_choice) {
 			setattr(0x20);
 		} else setattr(0x07);
@@ -157,7 +157,6 @@ const void display_editmenu() {
 
 const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 			//@ TODO: editing support
-	//while (1) {
 	displaytime();
 	if(zz_mode == zz_display_mode) {
 		if (kb_buf) cls();
@@ -227,8 +226,21 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 					break;
 			}
 		} else if(zz_mode==zz_selected_mode) {
+			request_atomicity(1);
 			if(zz_menu_choice==1) relink();
+			if(zz_menu_choice==2) {
+				int i;
+				for(i=0; i<(get_cell(currcell)->end - get_cell(currcell)->start) && i<512; i++) {
+					editbuf[i]=*((char*)((istream_begin) + get_cell(currcell)->start + i));
+				}
+				editbuf[(get_cell(currcell)->end - get_cell(currcell)->start)]=0;
+				kb_buf=0;
+				while(!editpane(5, 5, VGAX-10, VGAY-10, editbuf, max_edit_size-2, 0x02, 0x20)) {
+					yield();
+				}
+			}
 			zz_mode=zz_display_mode;
+			request_atomicity(0);
 		}
 	}
 }

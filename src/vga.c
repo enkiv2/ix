@@ -11,13 +11,14 @@ const char* editpane(int x, int y, int width, int height, char* text, int maxlen
 		if(kb_buf==27) return text; // ESC
 		if(kb_buf=='\b') {
 			text[strlen(text)-1]=0;
-		} else if(strlen(text)<maxlen-1) {
+		} else if(strlen(text)<(maxlen-2)) {
 			text[strlen(text)+1]='\0';
 			text[strlen(text)]=kb_buf;
 			kb_buf=0;
 		} else puts("\a"); // bell
 	}
 	shadowbox(x, y, width, height, text, fg, bg);
+	return 0;
 }
 
 void shadowbox(int x, int y, int width, int height, char* text, int fg, int bg) {
@@ -25,19 +26,24 @@ void shadowbox(int x, int y, int width, int height, char* text, int fg, int bg) 
 	col=color;
 	k=0;
 	linegoing=0;
-	for(i=x; i<x+width+1; i++) {
-		for(j=y; j<y+height+1; j++) {
-			locate(i, j);
-			if(i==x+width || j==y+height) {
+	for(i=y; i<y+height+1; i++) {
+		for(j=x; j<x+width+1; j++) {
+			locate(j, i);
+			if(j==x+width || i==y+height) {
 				setattr(bg);
-				puts(" ");
+				puts("+");
 			} else {
 				setattr(fg);
 				if(k<strlen(text)&&!linegoing) {
 					if(text[k]=='\n' || text[k]=='\r') {
 						linegoing=1;
+						putch(' ');
+						putch(' ');
 					} else	putch(text[k]);
-				} else puts(" ");
+				} else {
+					putch(' ');
+					if(k<strlen(text)) k--;
+				}
 				k++;
 			}
 		}
