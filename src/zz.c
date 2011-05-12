@@ -179,6 +179,14 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 			case 'f':
 				fork();
 				break;
+			case 'X':
+				dimx++;
+				if(dimx>max_dims) dimx=0;
+				break;
+			case 'Y':
+				dimy++;
+				if(dimy>max_dims) dimy=0;
+				break;
 			case 'm':
 				locate(0, 0);
 				puts("Marked!\n");

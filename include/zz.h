@@ -33,6 +33,9 @@ int forelink;		//@ cached posward/backward for linking
 int dimx;		//@ current x dimension
 int dimy;		//@ current y dimension
 char editbuf[max_edit_size]; //@ edit buffer
+#else
+extern int dimx;
+extern int dimy;
 #endif
 const void nav_cells(int);
 void init_cells();
