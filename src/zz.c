@@ -6,7 +6,7 @@
 
 int zz_menu_choice;
 const inline void relink();
-const void display_cells() { //@ displays based on currcell, in xbar form
+inline void display_cells() { //@ displays based on currcell, in xbar form
 	zzcell* curr;
 	zzcell* yneg;
 	zzcell* ypos;
@@ -103,7 +103,7 @@ void init_cells() { //@ Makes a clean zzspace with some default cells
 	
 }
 
-const void display_editmenu() {
+inline void display_editmenu() {
 	
 	int i;
 	/* shadowbox */
@@ -238,13 +238,18 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 			if(zz_menu_choice==1) relink();
 			if(zz_menu_choice==2) {
 				int i;
+				if(!modality) {
 				for(i=0; i<(get_cell(currcell)->end - get_cell(currcell)->start) && i<512; i++) {
 					editbuf[i]=*((char*)((istream_begin) + get_cell(currcell)->start + i));
 				}
 				editbuf[(get_cell(currcell)->end - get_cell(currcell)->start)]=0;
 				kb_buf=0;
-				while(!editpane(5, 5, VGAX-10, VGAY-10, editbuf, max_edit_size-2, 0x02, 0x20)) {
+				modality=1;
+				}
+				if(!editpane(5, 5, VGAX-10, VGAY-10, editbuf, max_edit_size-2, 0x02, 0x20)) {
 					yield();
+				} else {
+					modality=0;
 				}
 			}
 			zz_mode=zz_display_mode;

@@ -24,6 +24,7 @@ typedef struct zz_t {
 #define istream_begin cells_begin + sizeof(zzcell) * max_cells
 
 #ifdef zz_c
+int modality;
 int maxcell;		//@ highest number cell allocated
 int zz_mode;		//@ mode for UI state
 int currcell;		//@ currently selected cell
@@ -39,7 +40,7 @@ extern int dimy;
 #endif
 const void nav_cells(int);
 void init_cells();
-const void display_cells();
+inline void display_cells();
 zzcell* get_cell(int id);
 void write_cell(zzcell* cell, int limit);
 #endif
