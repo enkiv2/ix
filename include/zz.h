@@ -38,6 +38,7 @@ char editbuf[max_edit_size]; //@ edit buffer
 extern int dimx;
 extern int dimy;
 #endif
+
 const void nav_cells(int);
 void init_cells();
 inline void display_cells();
