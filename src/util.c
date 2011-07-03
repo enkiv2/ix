@@ -17,7 +17,8 @@ int pow(int x, int y) {
 }
 
 char* itoa(int in, char* buf) {
-	int j, i;
+	int j, i, num;
+	num=in;
 	for(i=0; in>=pow(10, i); i++);
 	if(in%10) i--;
 	if(in==0) i=0;
@@ -35,6 +36,11 @@ char* itoa(int in, char* buf) {
 	buf[j]='0'+in;
 	j++;
 	buf[j]='\0';
+	j++;
+	if(buf[0]=='0') { // get around glitch with extra preceding zeros
+		for(i=1; i<j; i++)
+			buf[i-1]=buf[i];
+	}
 	return buf;
 }
 

@@ -72,16 +72,14 @@ void init_cells() { //@ Makes a clean zzspace with some default cells
 
 	currcell_old=0;
 	currcell=0;
-	maxcell=3;
+	maxcell=2;
 
 	zz_mode=zz_display_mode;
 	zzcell* cell;
-	const char welcomestr[14]="Welcome to Ix";
-	const char helpstr[34]="Press h for help";
+	const char welcomestr[5]="Home";
 	for(i=0; i<max_cells; i++) {
 		cell=get_cell(i);
 		cell->start=i*max_edit_size;
-		//cell->end=((i+1)*max_edit_size) - 1;
 		cell->end=cell->start; // zero length
 		int j;
 		for(j=0; j<max_dims; j++) {
@@ -91,22 +89,14 @@ void init_cells() { //@ Makes a clean zzspace with some default cells
 	}
 	currcell=1;
 	cell=get_cell(1);
-	//cell->start=512;
-	cell->end=526;
-	for(i=0; i<14; i++) {
+	cell->end=516;
+	for(i=0; i<5; i++) {
 		*((char*)((istream_begin)+cell->start + i))=welcomestr[i];
 	}
-	cell->connections[0][0]=2;
-	cell=get_cell(2);
-	cell->end=1040;
-	for(i=0; i<35; i++) {
-		*((char*)((istream_begin)+cell->start+i))=helpstr[i];
-	}
-	cell->connections[0][1]=1;
 }
 
 inline void display_editmenu() {	
-	int i;
+	int i; // TODO: replace this with a proper shadowbox
 	/* shadowbox */
 	setattr(0x20);
 	for(i=0;i<12; i++) {

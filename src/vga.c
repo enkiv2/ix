@@ -17,7 +17,10 @@ const char* editpane(int x, int y, int width, int height, char* text, int maxlen
 			kb_buf=0;
 		} else puts("\a"); // bell
 	}
+	text[strlen(text)+1]=0;
+	text[strlen(text)]=15; // input cursor
 	shadowbox(x, y, width, height, text, fg, bg);
+	text[strlen(text)-1]=0;
 	return 0;
 }
 
@@ -79,7 +82,7 @@ void write(char c) { //@
 
 }
 
-void scroll(int numlines) { //@ not implemented
+void scroll(int numlines) { //@
 	int i, j;
 	for(i=numlines; i<VGAY; i++) {
 		for(j=0; j<VGAX*2; j++) {

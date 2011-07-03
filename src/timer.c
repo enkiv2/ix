@@ -1,14 +1,11 @@
-/* bkerndev - Bran's Kernel Development Tutorial
-*  By:   Brandon F. (friesenb@gmail.com)
-*  Desc: Timer driver
-*
-*  Notes: No warranty expressed or implied. Use at own risk. */
 #include <system.h>
 #include <vga.h>
 #include <kernel_assert.h>
 #include <zz.h>
+
 static void runproc(); // not exported
 void(*proc)(int);
+
 #define DEFAULT_PRIORITY 1
 #define MAX_PROCESSES 512
 #define JIFFY 18.222 //@ We might change the timer frequency later
@@ -126,16 +123,24 @@ void displaytime() { //@ time/status bar
 	puts(itoa(threadticks, timeset));
 	puts(" Nice:");
 	puts(itoa(priority[cpid], timeset));
-	setattr(0x05);
-	locate(VGAX-6, 0);
-	puts(itoa(dimx, timeset));
-	locate(VGAX-4, 2);
-	puts(itoa(dimy, timeset));
+	
+	// corner dim display
 	setattr(0x01);
-	locate(VGAX-1, 0);
-	puts("-");
+	locate(VGAX-4, 2);
+	puts("    "); // clear out old dimy
+	locate(VGAX-6, 0);
+	puts("    "); // clear out old dimx
+	locate(VGAX-3, 0);
+	puts("--+");
 	locate(VGAX-1, 1);
 	puts("|");
+	setattr(0x05);
+	locate(VGAX-(strlen(itoa(dimx, timeset))+2), 0);
+	puts(itoa(dimx, timeset));
+	locate(VGAX-strlen(itoa(dimy, timeset)), 2);
+	puts(itoa(dimy, timeset));
+	
+	// go back to normal
 	setattr(attr);
 	locate(x, y);
 }
