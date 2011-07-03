@@ -160,6 +160,7 @@ inline void display_editmenu() {
 const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 			//@ TODO: editing support
 	displaytime();
+	int i;
 	if(zz_mode == zz_display_mode) {
 		if (kb_buf) cls();
 		switch(kb_buf) {
@@ -237,6 +238,80 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 			}
 		} else if(zz_mode==zz_selected_mode) {
 			request_atomicity(1);
+			if(modality==6) {
+				if(!editpane(5, 5, VGAX-10, VGAY-10, editbuf, max_edit_size-2, 0x02, 0x20)) {
+                                        yield();
+                                } else {
+                                        for(i=0; i<max_edit_size-2; i++) {
+                                                if(editbuf[i]!=0) {
+                                                        *((char*)((istream_begin)+get_cell(currcell)->start+i))=editbuf[i];
+                                                } else {
+                                                        *((char*)((istream_begin)+get_cell(currcell)->start+i))=editbuf[i];
+                                                        get_cell(currcell)->end=i;
+                                                        modality=0;
+                                                        break;
+                                                }
+                                        }
+					locate(0, 0);
+        	                        puts("Marked!\n");
+        	                        get_cell(currcell_old)->connections[dimlink][forelink]=currcell;
+        	                        puts("Linked cell #");
+                	                puts(itoa(currcell_old, editbuf));
+                	                if(forelink) { puts("poswardly "); } else puts("negwardly ");
+                	                puts("on dimension ");
+                        	        puts(itoa(dimlink, editbuf));
+                        	        puts(" to cell #");
+                                	puts(itoa(currcell, editbuf));
+				        modality=0;
+                                }
+
+			} else if(zz_menu_choice==0 || modality==5) {
+				if(!modality) {
+			                cls();
+                			display_cells();
+                			locate(0, 0);
+                			puts("Indicate direction of connection, or c to cancel");
+               				modality=5;
+     				} else {
+			                if(kb_buf!='w' && kb_buf!='a' && kb_buf!='s' && kb_buf!='d' && kb_buf!='c') {
+        			                timer_wait(1);
+                			        displaytime();
+                			        modality=5;
+	  					yield();
+			                } else {
+                			        if(kb_buf=='c') {
+      			                          zz_mode=zz_edit_mode;
+			                        } else if(kb_buf=='w') {
+			                                dimlink=dimy;
+                			                forelink=0;
+       				                } else if(kb_buf=='a') {
+                			                dimlink=dimx;
+          			                      forelink=0;
+   				                } else if(kb_buf=='s') {
+                    				            dimlink=dimy;
+
+						} else if(kb_buf=='d') {
+			                                dimlink=dimx;
+                			                forelink=1;
+                        			}
+                      				locate(0, 1);
+						currcell_old=currcell;
+						currcell=maxcell;
+						maxcell++;
+						puts("Good! Now, compose your new cell.");
+						modality=6;
+						for(i=0; i<(get_cell(currcell)->end - get_cell(currcell)->start) && i<512; i++) {
+                                                	editbuf[i]=*((char*)((istream_begin) + get_cell(currcell)->start + i));
+                                        	}
+                                        	for (i=i; i<max_edit_size-2; i++) {
+                                                	//editbuf[(get_cell(currcell)->end - get_cell(currcell)->start)]=0;
+                                                	editbuf[i]=0;
+                                        	}
+                                       		kb_buf=0;
+
+					}
+				}
+			}
 			if(zz_menu_choice==1 || modality==1) {
 				relink();
 			}
