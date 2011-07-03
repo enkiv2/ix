@@ -182,6 +182,14 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 			case 'f':
 				fork();
 				break;
+			case 'X':
+				dimx--;
+				if(dimx<0) dimx=max_dims;
+				break;
+			case 'Y':
+				dimy--;
+				if(dimy<0) dimy=max_dims;
+				break;
 			case 'x':
 				dimx++;
 				if(dimx>max_dims) dimx=0;
@@ -189,6 +197,27 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 			case 'y':
 				dimy++;
 				if(dimy>max_dims) dimy=0;
+				break;
+			case 'z': // swap apparent x/y
+				i=dimy;
+				dimy=dimx;
+				dimx=i;
+				break;
+			case 'l':
+				zz_mode=zz_selected_mode;
+				zz_menu_choice=1; // link cell
+				break;
+			case 'c':
+				zz_mode=zz_selected_mode;
+				zz_menu_choice=0; // new cell
+				break;
+			case 'r':
+				zz_mode=zz_selected_mode;
+				zz_menu_choice=3; // remove cell
+				break;
+			case 'e':
+				zz_mode=zz_selected_mode;
+				zz_menu_choice=2; // edit content mode
 				break;
 			case 'm':
 				locate(0, 0);
@@ -340,9 +369,30 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 				}
 			}
 			if (zz_menu_choice==3) { // remove cell
-				for(i=0; i<max_dims; i++) { // just make this neighbour nobody
-					get_cell(get_cell(currcell)->connections[i][0])->connections[i][1]=get_cell(currcell)->connections[i][1];
-					get_cell(get_cell(currcell)->connections[i][1])->connections[i][0]=get_cell(currcell)->connections[i][0];
+				if (!modality) {
+					locate(0, 0);
+					puts("Press wasd to choose direction or c to cancel");
+					modality=3;
+				} else if (modality==3) {
+					if(kb_buf=='c')
+						modality=0;
+					if(kb_buf=='w' || kb_buf=='a' || kb_buf=='s' || kb_buf=='d') {
+						currcell_old=currcell;
+						if(kb_buf=='w') 
+							currcell=get_cell(currcell_old)->connections[dimy][0];
+						if(kb_buf=='a')
+							currcell=get_cell(currcell_old)->connections[dimx][0];
+						if(kb_buf=='s')
+							currcell=get_cell(currcell_old)->connections[dimy][1];
+						if(kb_buf=='s')
+							currcell=get_cell(currcell_old)->connections[dimx][1];
+						for(i=0; i<max_dims; i++) { // just make this neighbour nobody
+							get_cell(get_cell(currcell)->connections[i][0])->connections[i][1]=get_cell(currcell)->connections[i][1];
+							get_cell(get_cell(currcell)->connections[i][1])->connections[i][0]=get_cell(currcell)->connections[i][0];
+						}
+						currcell=currcell_old;
+						modality=0;
+					}
 				}
 			}
 			}
