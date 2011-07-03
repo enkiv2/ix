@@ -247,7 +247,7 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
                                                         *((char*)((istream_begin)+get_cell(currcell)->start+i))=editbuf[i];
                                                 } else {
                                                         *((char*)((istream_begin)+get_cell(currcell)->start+i))=editbuf[i];
-                                                        get_cell(currcell)->end=i;
+                                                        get_cell(currcell)->end=get_cell(currcell)->start+i;
                                                         modality=0;
                                                         break;
                                                 }
@@ -255,6 +255,7 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 					locate(0, 0);
         	                        puts("Marked!\n");
         	                        get_cell(currcell_old)->connections[dimlink][forelink]=currcell;
+					get_cell(currcell)->connections[dimlink][!forelink]=currcell_old;
         	                        puts("Linked cell #");
                 	                puts(itoa(currcell_old, editbuf));
                 	                if(forelink) { puts("poswardly "); } else puts("negwardly ");
@@ -263,9 +264,10 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
                         	        puts(" to cell #");
                                 	puts(itoa(currcell, editbuf));
 				        modality=0;
+					zz_mode=zz_display_mode;
                                 }
-
-			} else if(zz_menu_choice==0 || modality==5) {
+			} else {
+			if(zz_menu_choice==0 || modality==5) {
 				if(!modality) {
 			                cls();
                 			display_cells();
@@ -296,14 +298,14 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
                         			}
                       				locate(0, 1);
 						currcell_old=currcell;
-						maxcell++;
 						currcell=maxcell;
-						get_cell(currcell)->start=get_cell(currcell_old)->end;
+						maxcell++;
+						get_cell(currcell)->start=get_cell(currcell-1)->end + 2;
 						puts("Good! Now, compose your new cell.");
 						modality=6;
-						for(i=0; i<512; i++) {
-                                                	editbuf[i]=0;//*((char*)((istream_begin) + get_cell(currcell)->start + i));
-                                        	}
+						//for(i=0; i<512; i++) {
+                                                //	editbuf[i]=0;//*((char*)((istream_begin) + get_cell(currcell)->start + i));
+                                        	//}
                                         	for (i=i; i<max_edit_size-2; i++) {
                                                 	//editbuf[(get_cell(currcell)->end - get_cell(currcell)->start)]=0;
                                                 	editbuf[i]=0;
@@ -344,6 +346,7 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 					}
 					modality=0;
 				}
+			}
 			}
 			if(!modality) {
 				zz_mode=zz_display_mode;
