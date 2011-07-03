@@ -78,8 +78,8 @@ void init_cells() { //@ Makes a clean zzspace with some default cells
 	const char helpstr[34]="Help: wasd to navigate, i to edit";
 	for(i=0; i<max_cells; i++) {
 		cell=get_cell(i);
-		cell->start=0;
-		cell->end=0;
+		cell->start=i*512;
+		cell->end=((i+1)*512) - 1;
 		int j;
 		for(j=0; j<max_dims; j++) {
 			cell->connections[j][0]=0;
@@ -95,8 +95,8 @@ void init_cells() { //@ Makes a clean zzspace with some default cells
 	}
 	cell->connections[0][0]=1;
 	cell=get_cell(1);
-	cell->start=15;
-	cell->end=49;
+	//cell->start=15;
+	cell->end=546;
 	for(i=0; i<34; i++) {
 		*((char*)((istream_begin)+cell->start+i))=helpstr[i];
 	}
@@ -255,7 +255,7 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 					locate(0, 0);
         	                        puts("Marked!\n");
         	                        get_cell(currcell_old)->connections[dimlink][forelink]=currcell;
-					get_cell(currcell)->connections[dimlink][!forelink]=currcell_old;
+					//get_cell(currcell)->connections[dimlink][!forelink]=currcell_old;
         	                        puts("Linked cell #");
                 	                puts(itoa(currcell_old, editbuf));
                 	                if(forelink) { puts("poswardly "); } else puts("negwardly ");
@@ -325,8 +325,8 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 					for(i=0; i<(get_cell(currcell)->end - get_cell(currcell)->start) && i<512; i++) {
 						editbuf[i]=*((char*)((istream_begin) + get_cell(currcell)->start + i));
 					}
+					editbuf[i]=0;
 					for (i=i; i<max_edit_size-2; i++) {
-						//editbuf[(get_cell(currcell)->end - get_cell(currcell)->start)]=0;
 						editbuf[i]=0;
 					}
 					kb_buf=0;
@@ -334,17 +334,11 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 				if(!editpane(5, 5, VGAX-10, VGAY-10, editbuf, max_edit_size-2, 0x02, 0x20)) {
 					yield();
 				} else {
-					for(i=0; i<max_edit_size-2; i++) {
-						if(editbuf[i]!=0) {
-							*((char*)((istream_begin)+get_cell(currcell)->start+i))=editbuf[i];
-						} else {
-							*((char*)((istream_begin)+get_cell(currcell)->start+i))=editbuf[i];
-							get_cell(currcell)->end=i;
-							modality=0;
-							break;
-						}
-					}
-					modality=0;
+					for(i=0; i<max_edit_size-2 && editbuf[i]!=0; i++) 
+						*((char*)((istream_begin)+get_cell(currcell)->start+i))=editbuf[i];
+					*((char*)((istream_begin)+get_cell(currcell)->start+i))=editbuf[i];
+					get_cell(currcell)->end=get_cell(currcell)->start+i;
+					modality=0;		
 				}
 			}
 			}
