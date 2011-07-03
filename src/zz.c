@@ -65,7 +65,9 @@ zzcell* get_cell(int id) { //@
 
 void init_cells() { //@ Makes a clean zzspace with some default cells
 	int i;
-	
+
+	dimx=0;
+	dimy=1;
 	modality=0;
 
 	currcell_old=0;
@@ -182,11 +184,11 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 			case 'f':
 				fork();
 				break;
-			case 'X':
+			case 'x':
 				dimx++;
 				if(dimx>max_dims) dimx=0;
 				break;
-			case 'Y':
+			case 'y':
 				dimy++;
 				if(dimy>max_dims) dimy=0;
 				break;
