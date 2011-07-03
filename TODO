@@ -1,6 +1,5 @@
 TODO:
-* make keyboard input loops threadsafe
-* implement zzstructure editor
+* finish zzstructure editor
 * replace bkerndev code
 * add disk support of some kind, so that zzstructures and istream may be saved
 * add support for some kind of user scripting
