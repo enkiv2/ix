@@ -123,6 +123,12 @@ void displaytime() { //@ time/status bar
 	puts(padl(3, itoa(threadticks, timeset), ' '));
 	puts(" Nice:");
 	puts(itoa(priority[cpid], timeset));
+	locate(VGAX-8, VGAY-1);
+	setattr(0x01);
+	puts("IX v0.1");
+	setattr(0x04);
+	locate(VGAX-8, VGAY-2);
+	puts("\x0f");
 	
 	// corner dim display
 	setattr(0x01);
