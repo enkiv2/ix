@@ -72,42 +72,40 @@ void init_cells() { //@ Makes a clean zzspace with some default cells
 
 	currcell_old=0;
 	currcell=0;
-	maxcell=2;
+	maxcell=3;
 
 	zz_mode=zz_display_mode;
 	zzcell* cell;
 	const char welcomestr[14]="Welcome to Ix";
-	const char helpstr[34]="Help: wasd to navigate, i to edit";
+	const char helpstr[34]="Press h for help";
 	for(i=0; i<max_cells; i++) {
 		cell=get_cell(i);
 		cell->start=i*max_edit_size;
-		cell->end=((i+1)*max_edit_size) - 1;
+		//cell->end=((i+1)*max_edit_size) - 1;
+		cell->end=cell->start; // zero length
 		int j;
 		for(j=0; j<max_dims; j++) {
 			cell->connections[j][0]=0;
 			cell->connections[j][1]=0;
 		}
 	}
-	currcell=0;
-	cell=get_cell(0);
-	cell->start=0;
-	cell->end=14;
+	currcell=1;
+	cell=get_cell(1);
+	//cell->start=512;
+	cell->end=526;
 	for(i=0; i<14; i++) {
 		*((char*)((istream_begin)+cell->start + i))=welcomestr[i];
 	}
-	cell->connections[0][0]=1;
-	cell=get_cell(1);
-	cell->end=546;
-	for(i=0; i<34; i++) {
+	cell->connections[0][0]=2;
+	cell=get_cell(2);
+	cell->end=1040;
+	for(i=0; i<35; i++) {
 		*((char*)((istream_begin)+cell->start+i))=helpstr[i];
 	}
-	
-
-	
+	cell->connections[0][1]=1;
 }
 
-inline void display_editmenu() {
-	
+inline void display_editmenu() {	
 	int i;
 	/* shadowbox */
 	setattr(0x20);
@@ -170,16 +168,20 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 				zz_mode=zz_edit_mode;
 				break;
 			case 'w':
-				currcell=get_cell(currcell)->connections[dimy][0];
+				if(get_cell(currcell)->connections[dimy][0])
+					currcell=get_cell(currcell)->connections[dimy][0];
 				break;
 			case 'a':
-				currcell=get_cell(currcell)->connections[dimx][0];
+				if(get_cell(currcell)->connections[dimx][0])
+					currcell=get_cell(currcell)->connections[dimx][0];
 				break;
 			case 's':
-				currcell=get_cell(currcell)->connections[dimy][1];
+				if(get_cell(currcell)->connections[dimy][1])
+					currcell=get_cell(currcell)->connections[dimy][1];
 				break;
 			case 'd':
-				currcell=get_cell(currcell)->connections[dimx][1];
+				if(get_cell(currcell)->connections[dimx][1])
+					currcell=get_cell(currcell)->connections[dimx][1];
 				break;
 			case 'f':
 				fork();
@@ -235,7 +237,7 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 				puts(itoa(currcell, editbuf));
 				break;
 			case 'h':
-				shadowbox(5, 5, 30, 20, "HELP\nNavigation   Editing\n w            i-edit menu\na s           e-edit\n d            c-new\nx-inc dimx   r-remove\ny-inc dimy   l-link\nX-dec dimx   m-mark\nY-dec dimy   h-help", 0x20, 0x02);
+				shadowbox(5, 5, 30, 20, "HELP\nNavigation    Editing\n w            i-edit menu\na s           e-edit\n d            c-new\nx-inc dimx    r-remove\ny-inc dimy    l-link\nX-dec dimx    m-mark\nY-dec dimy    h-help", 0x20, 0x02);
 				zz_mode=zz_delay_mode;
 				break;
 		}
@@ -304,103 +306,101 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 					zz_mode=zz_display_mode;
                                 }
 			} else {
-			if(zz_menu_choice==0 || modality==5) { // new cell part 1: connection designation
-				if(!modality) {
-			                cls();
-                			display_cells();
-                			locate(0, 0);
-                			puts("Indicate direction of connection, or c to cancel");
-               				modality=5;
-     				} else {
-			                if(kb_buf!='w' && kb_buf!='a' && kb_buf!='s' && kb_buf!='d' && kb_buf!='c') {
-        			                timer_wait(1);
-                			        displaytime();
-                			        modality=5;
-	  					yield();
-			                } else {
-                			        if(kb_buf=='c') {
-      			                          zz_mode=zz_edit_mode;
-			                        } else if(kb_buf=='w') {
-			                                dimlink=dimy;
-                			                forelink=0;
-       				                } else if(kb_buf=='a') {
-                			                dimlink=dimx;
-          			                      forelink=0;
-   				                } else if(kb_buf=='s') {
-                    				            dimlink=dimy;
-
-						} else if(kb_buf=='d') {
-			                                dimlink=dimx;
-                			                forelink=1;
-                        			}
-                      				locate(0, 1);
-						currcell_old=currcell;
-						currcell=maxcell;
-						maxcell++;
-						get_cell(currcell)->start=currcell*max_edit_size;
-						puts("Good! Now, compose your new cell.");
-						modality=6;
-                                        	for (i=i; i<max_edit_size-2; i++) {
-                                                	editbuf[i]=0;
-                                        	}
-                                       		kb_buf=0;
-
-					}
-				}
-			}
-			if(zz_menu_choice==1 || modality==1) { // edit connections
-				relink();
-			}
-			if(zz_menu_choice==2 || modality==2) { // edit contents
-				int i;
-				if(!modality) {
-					modality=2;
-					for(i=0; i<(get_cell(currcell)->end - get_cell(currcell)->start) && i<max_edit_size; i++) {
-						editbuf[i]=*((char*)((istream_begin) + get_cell(currcell)->start + i));
-					}
-					editbuf[i]=0;
-					for (i=i; i<max_edit_size-2; i++) {
-						editbuf[i]=0;
-					}
-					kb_buf=0;
-				}
-				if(!editpane(5, 5, VGAX-10, VGAY-10, editbuf, max_edit_size-2, 0x02, 0x20)) {
-					yield();
-				} else {
-					for(i=0; i<max_edit_size-2 && editbuf[i]!=0; i++) 
-						*((char*)((istream_begin)+get_cell(currcell)->start+i))=editbuf[i];
-					*((char*)((istream_begin)+get_cell(currcell)->start+i))=editbuf[i];
-					get_cell(currcell)->end=get_cell(currcell)->start+i;
-					modality=0;		
-				}
-			}
-			if (zz_menu_choice==3) { // remove cell
-				if (!modality) {
-					locate(0, 0);
-					puts("Press wasd to choose direction or c to cancel");
-					modality=3;
-				} else if (modality==3) {
-					if(kb_buf=='c')
-						modality=0;
-					if(kb_buf=='w' || kb_buf=='a' || kb_buf=='s' || kb_buf=='d') {
-						currcell_old=currcell;
-						if(kb_buf=='w') 
-							currcell=get_cell(currcell_old)->connections[dimy][0];
-						if(kb_buf=='a')
-							currcell=get_cell(currcell_old)->connections[dimx][0];
-						if(kb_buf=='s')
-							currcell=get_cell(currcell_old)->connections[dimy][1];
-						if(kb_buf=='s')
-							currcell=get_cell(currcell_old)->connections[dimx][1];
-						for(i=0; i<max_dims; i++) { // just make this neighbour nobody
-							get_cell(get_cell(currcell)->connections[i][0])->connections[i][1]=get_cell(currcell)->connections[i][1];
-							get_cell(get_cell(currcell)->connections[i][1])->connections[i][0]=get_cell(currcell)->connections[i][0];
+				if(zz_menu_choice==0 || modality==5) { // new cell part 1: connection designation
+					if(!modality) {
+				                cls();
+                				display_cells();
+                				locate(0, 0);
+                				puts("Indicate direction of connection, or c to cancel");
+               					modality=5;
+     					} else {
+				                if(kb_buf!='w' && kb_buf!='a' && kb_buf!='s' && kb_buf!='d' && kb_buf!='c') {
+        				                timer_wait(1);
+                				        displaytime();
+                				        modality=5;
+	  						yield();
+				                } else {
+                				        if(kb_buf=='c') {
+      			        	                  zz_mode=zz_edit_mode;
+			        	                } else if(kb_buf=='w') {
+			        	                        dimlink=dimy;
+                				                forelink=0;
+       					                } else if(kb_buf=='a') {
+                				                dimlink=dimx;
+          				                      forelink=0;
+   					                } else if(kb_buf=='s') {
+                    					            dimlink=dimy;
+							} else if(kb_buf=='d') {
+				                                dimlink=dimx;
+	                			                forelink=1;
+	                        			}
+	                      				locate(0, 1);
+							currcell_old=currcell;
+							currcell=maxcell;
+							maxcell++;
+							get_cell(currcell)->start=currcell*max_edit_size;
+							puts("Good! Now, compose your new cell.");
+							modality=6;
+	                                        	for (i=i; i<max_edit_size-2; i++) {
+	                                                	editbuf[i]=0;
+	                                        	}
+	                                       		kb_buf=0;
 						}
-						currcell=currcell_old;
-						modality=0;
 					}
 				}
-			}
+				if(zz_menu_choice==1 || modality==1) { // edit connections
+					relink();
+				}
+				if(zz_menu_choice==2 || modality==2) { // edit contents
+					int i;
+					if(!modality) {
+						modality=2;
+						for(i=0; i<(get_cell(currcell)->end - get_cell(currcell)->start) && i<max_edit_size; i++) {
+							editbuf[i]=*((char*)((istream_begin) + get_cell(currcell)->start + i));
+						}
+						editbuf[i]=0;
+						for (i=i; i<max_edit_size-2; i++) {
+							editbuf[i]=0;
+						}
+						kb_buf=0;
+					}
+					if(!editpane(5, 5, VGAX-10, VGAY-10, editbuf, max_edit_size-2, 0x02, 0x20)) {
+						yield();
+					} else {
+						for(i=0; i<max_edit_size-2 && editbuf[i]!=0; i++) 
+							*((char*)((istream_begin)+get_cell(currcell)->start+i))=editbuf[i];
+						*((char*)((istream_begin)+get_cell(currcell)->start+i))=editbuf[i];
+						get_cell(currcell)->end=get_cell(currcell)->start+i;
+						modality=0;		
+					}
+				}
+				if (zz_menu_choice==3) { // remove cell
+					if (!modality) {
+						locate(0, 0);
+						puts("Press wasd to choose direction or c to cancel");
+						modality=3;
+					} else if (modality==3) {
+						if(kb_buf=='c')
+							modality=0;
+						if(kb_buf=='w' || kb_buf=='a' || kb_buf=='s' || kb_buf=='d') {
+							currcell_old=currcell;
+							if(kb_buf=='w') 
+								currcell=get_cell(currcell_old)->connections[dimy][0];
+							if(kb_buf=='a')
+								currcell=get_cell(currcell_old)->connections[dimx][0];
+							if(kb_buf=='s')
+								currcell=get_cell(currcell_old)->connections[dimy][1];
+							if(kb_buf=='s')
+								currcell=get_cell(currcell_old)->connections[dimx][1];
+							for(i=0; i<max_dims; i++) { // just make this neighbour nobody
+								get_cell(get_cell(currcell)->connections[i][0])->connections[i][1]=get_cell(currcell)->connections[i][1];
+								get_cell(get_cell(currcell)->connections[i][1])->connections[i][0]=get_cell(currcell)->connections[i][0];
+							}
+							currcell=currcell_old;
+							modality=0;
+						}
+					}
+				}
 			}
 			if(!modality) {
 				zz_mode=zz_display_mode;

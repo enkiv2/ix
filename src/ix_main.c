@@ -96,7 +96,7 @@ void kmain(unsigned long magic, unsigned long addr) {
 	init_cells();	
 
 	kb_buf=0;	
-	shadowbox(5, 5, 20, 10, "Welcome to ix. Use\n   w\na      d\n   s   to navigate, and i to edit", 0x20, 0x02);
+	shadowbox(5, 5, 20, 10, "Welcome to ix. Use\n   w\na      d\n   s    to navigate,\ni to edit,\nand h for help", 0x20, 0x02);
 	while (!kb_buf);
 
 	cls();
