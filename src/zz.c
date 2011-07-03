@@ -194,6 +194,7 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 				locate(0, 0);
 				puts("Marked!\n");
 				get_cell(currcell_old)->connections[dimlink][forelink]=currcell;
+				get_cell(currcell)->connections[dimlink][!forelink]=currcell_old;
 				puts("Linked cell #");
 				puts(itoa(currcell_old, editbuf));
 				if(forelink) { puts("poswardly "); } else puts("negwardly ");
@@ -255,7 +256,7 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 					locate(0, 0);
         	                        puts("Marked!\n");
         	                        get_cell(currcell_old)->connections[dimlink][forelink]=currcell;
-					//get_cell(currcell)->connections[dimlink][!forelink]=currcell_old;
+					get_cell(currcell)->connections[dimlink][!forelink]=currcell_old;
         	                        puts("Linked cell #");
                 	                puts(itoa(currcell_old, editbuf));
                 	                if(forelink) { puts("poswardly "); } else puts("negwardly ");
@@ -383,7 +384,6 @@ const inline void relink() {
 			puts("Good! Now, navigate to the cell you want to link to and press 'm' to mark it.");
 			currcell_old = currcell;
 			modality=0;
-			timer_wait(1);
 		}
 	}
 }
