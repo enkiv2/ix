@@ -227,7 +227,7 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 				puts(itoa(currcell, editbuf));
 				break;
 			case 'h':
-				shadowbox(5, 5, 30, 20, "HELP\nNavigation    Editing\n w            i-edit menu\na s           e-edit\n d            c-new\nx-inc dimx    r-remove\ny-inc dimy    l-link\nX-dec dimx    m-mark\nY-dec dimy    h-help", 0x20, 0x02);
+				shadowbox(5, 5, 30, 10, "HELP\nNavigation    Editing\n w            i-edit menu\na s           e-edit\n d            c-new\nx-inc dimx    r-remove\ny-inc dimy    l-link\nX-dec dimx    m-mark\nY-dec dimy    h-help\nPRESS ANY KEY TO CONTINUE", 0x20, 0x02);
 				zz_mode=zz_delay_mode;
 				break;
 		}

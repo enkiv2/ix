@@ -123,6 +123,8 @@ void displaytime() { //@ time/status bar
 	puts(padl(3, itoa(threadticks, timeset), ' '));
 	puts(" Nice:");
 	puts(itoa(priority[cpid], timeset));
+	setattr(0x50);
+	puts("Press h for help");
 	locate(VGAX-8, VGAY-1);
 	setattr(0x01);
 	puts("IX v0.1");
