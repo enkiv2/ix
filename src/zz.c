@@ -300,7 +300,7 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 						currcell_old=currcell;
 						currcell=maxcell;
 						maxcell++;
-						get_cell(currcell)->start=get_cell(currcell-1)->end + 2;
+						get_cell(currcell)->start=currcell*512;//get_cell(currcell-1)->end + 2;
 						puts("Good! Now, compose your new cell.");
 						modality=6;
 						//for(i=0; i<512; i++) {
