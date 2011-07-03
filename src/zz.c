@@ -80,8 +80,8 @@ void init_cells() { //@ Makes a clean zzspace with some default cells
 	const char helpstr[34]="Help: wasd to navigate, i to edit";
 	for(i=0; i<max_cells; i++) {
 		cell=get_cell(i);
-		cell->start=i*512;
-		cell->end=((i+1)*512) - 1;
+		cell->start=i*max_edit_size;
+		cell->end=((i+1)*max_edit_size) - 1;
 		int j;
 		for(j=0; j<max_dims; j++) {
 			cell->connections[j][0]=0;
@@ -161,6 +161,8 @@ inline void display_editmenu() {
 const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 	displaytime();
 	int i;
+	if (zz_mode==zz_delay_mode && kb_buf)
+		zz_mode=zz_display_mode;
 	if(zz_mode == zz_display_mode) {
 		if (kb_buf) cls();
 		switch(kb_buf) {
@@ -232,8 +234,12 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 				puts(" to cell #");
 				puts(itoa(currcell, editbuf));
 				break;
+			case 'h':
+				shadowbox(5, 5, 30, 20, "HELP\nNavigation   Editing\n w            i-edit menu\na s           e-edit\n d            c-new\nx-inc dimx   r-remove\ny-inc dimy   l-link\nX-dec dimx   m-mark\nY-dec dimy   h-help", 0x20, 0x02);
+				zz_mode=zz_delay_mode;
+				break;
 		}
-		kb_buf='\0';
+		kb_buf=0;
 		if(zz_mode==zz_display_mode) display_cells(); // hack
 	} else {
 		if(zz_mode==zz_edit_mode) {
@@ -331,7 +337,7 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 						currcell_old=currcell;
 						currcell=maxcell;
 						maxcell++;
-						get_cell(currcell)->start=currcell*512;//get_cell(currcell-1)->end + 2;
+						get_cell(currcell)->start=currcell*max_edit_size;
 						puts("Good! Now, compose your new cell.");
 						modality=6;
                                         	for (i=i; i<max_edit_size-2; i++) {
@@ -349,7 +355,7 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 				int i;
 				if(!modality) {
 					modality=2;
-					for(i=0; i<(get_cell(currcell)->end - get_cell(currcell)->start) && i<512; i++) {
+					for(i=0; i<(get_cell(currcell)->end - get_cell(currcell)->start) && i<max_edit_size; i++) {
 						editbuf[i]=*((char*)((istream_begin) + get_cell(currcell)->start + i));
 					}
 					editbuf[i]=0;

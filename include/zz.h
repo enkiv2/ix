@@ -14,6 +14,7 @@
 #define zz_selected_mode 2	//@
 #define zz_newcell_mode 3	//@
 #define zz_editcell_mode 4	//@
+#define zz_delay_mode 5		//@ for displaying things until a key press occurs
 
 typedef struct zz_t {
 	int connections[max_dims][2];
