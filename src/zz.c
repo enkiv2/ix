@@ -237,11 +237,13 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 			}
 		} else if(zz_mode==zz_selected_mode) {
 			request_atomicity(1);
-			if(zz_menu_choice==1) relink();
-			if(zz_menu_choice==2 || modality) {
+			if(zz_menu_choice==1 || modality==1) {
+				relink();
+			}
+			if(zz_menu_choice==2 || modality==2) {
 				int i;
 				if(!modality) {
-					modality=1;
+					modality=2;
 					for(i=0; i<(get_cell(currcell)->end - get_cell(currcell)->start) && i<512; i++) {
 						editbuf[i]=*((char*)((istream_begin) + get_cell(currcell)->start + i));
 					}
@@ -263,35 +265,40 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 }
 
 const inline void relink() {
-	request_atomicity(1);
-	cls();
-	display_cells();
-	locate(0, 0);
-	puts("Indicate direction of connection, or c to cancel");
-	while(kb_buf!='w' && kb_buf!='a' && kb_buf!='s' && kb_buf!='d' && kb_buf!='c') {
-		timer_wait(1);
-		displaytime();
+	if(!modality) {
+		cls();
+		display_cells();
+		locate(0, 0);
+		puts("Indicate direction of connection, or c to cancel");
+		modality=1;
+	} else {
+		if(kb_buf!='w' && kb_buf!='a' && kb_buf!='s' && kb_buf!='d' && kb_buf!='c') {
+			timer_wait(1);
+			displaytime();
+			modality=2;
+			yield();
+		} else {
+			if(kb_buf=='c') {
+				zz_mode=zz_edit_mode;
+			} else if(kb_buf=='w') {
+				dimlink=dimy;
+				forelink=0;
+			} else if(kb_buf=='a') {
+				dimlink=dimx;
+				forelink=0;
+			} else if(kb_buf=='s') {
+				dimlink=dimy;
+				forelink=1;
+			} else if(kb_buf=='d') {
+				dimlink=dimx;
+				forelink=1;
+			}
+			locate(0, 1);
+			puts("Good! Now, navigate to the cell you want to link to and press 'm' to mark it.");
+			currcell_old = currcell;
+			modality=0;
+		}
 	}
-	if(kb_buf=='c') {
-		zz_mode=zz_edit_mode;
-	} else if(kb_buf=='w') {
-		dimlink=dimy;
-		forelink=0;
-	} else if(kb_buf=='a') {
-		dimlink=dimx;
-		forelink=0;
-	} else if(kb_buf=='s') {
-		dimlink=dimy;
-		forelink=1;
-	} else if(kb_buf=='d') {
-		dimlink=dimx;
-		forelink=1;
-	}
-	locate(0, 1);
-	puts("Good! Now, navigate to the cell you want to link to and press 'm' to mark it.");
-	currcell_old = currcell;
-	zz_mode=zz_display_mode;
-	request_atomicity(0);
 }
 
 void write_cell(zzcell* cell, int limit) { //@ displays a given cell. limit is
