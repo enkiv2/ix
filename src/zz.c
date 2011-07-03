@@ -247,12 +247,25 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 					for(i=0; i<(get_cell(currcell)->end - get_cell(currcell)->start) && i<512; i++) {
 						editbuf[i]=*((char*)((istream_begin) + get_cell(currcell)->start + i));
 					}
-					editbuf[(get_cell(currcell)->end - get_cell(currcell)->start)]=0;
+					for (i=i; i<max_edit_size-2; i++) {
+						//editbuf[(get_cell(currcell)->end - get_cell(currcell)->start)]=0;
+						editbuf[i]=0;
+					}
 					kb_buf=0;
 				}
 				if(!editpane(5, 5, VGAX-10, VGAY-10, editbuf, max_edit_size-2, 0x02, 0x20)) {
 					yield();
 				} else {
+					for(i=0; i<max_edit_size-2; i++) {
+						if(editbuf[i]!=0) {
+							*((char*)((istream_begin)+get_cell(currcell)->start+i))=editbuf[i];
+						} else {
+							*((char*)((istream_begin)+get_cell(currcell)->start+i))=editbuf[i];
+							get_cell(currcell)->end=i;
+							modality=0;
+							break;
+						}
+					}
 					modality=0;
 				}
 			}
@@ -297,6 +310,7 @@ const inline void relink() {
 			puts("Good! Now, navigate to the cell you want to link to and press 'm' to mark it.");
 			currcell_old = currcell;
 			modality=0;
+			timer_wait(1);
 		}
 	}
 }
