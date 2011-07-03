@@ -65,6 +65,8 @@ zzcell* get_cell(int id) { //@
 
 void init_cells() { //@ Makes a clean zzspace with some default cells
 	int i;
+	
+	modality=0;
 
 	currcell_old=0;
 	currcell=0;
@@ -236,15 +238,15 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 		} else if(zz_mode==zz_selected_mode) {
 			request_atomicity(1);
 			if(zz_menu_choice==1) relink();
-			if(zz_menu_choice==2) {
+			if(zz_menu_choice==2 || modality) {
 				int i;
 				if(!modality) {
-				for(i=0; i<(get_cell(currcell)->end - get_cell(currcell)->start) && i<512; i++) {
-					editbuf[i]=*((char*)((istream_begin) + get_cell(currcell)->start + i));
-				}
-				editbuf[(get_cell(currcell)->end - get_cell(currcell)->start)]=0;
-				kb_buf=0;
-				modality=1;
+					modality=1;
+					for(i=0; i<(get_cell(currcell)->end - get_cell(currcell)->start) && i<512; i++) {
+						editbuf[i]=*((char*)((istream_begin) + get_cell(currcell)->start + i));
+					}
+					editbuf[(get_cell(currcell)->end - get_cell(currcell)->start)]=0;
+					kb_buf=0;
 				}
 				if(!editpane(5, 5, VGAX-10, VGAY-10, editbuf, max_edit_size-2, 0x02, 0x20)) {
 					yield();
@@ -252,8 +254,10 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 					modality=0;
 				}
 			}
-			zz_mode=zz_display_mode;
-			request_atomicity(0);
+			if(!modality) {
+				zz_mode=zz_display_mode;
+				request_atomicity(0);
+			}
 		}
 	}
 }
