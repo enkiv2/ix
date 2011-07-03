@@ -107,20 +107,20 @@ void displaytime() { //@ time/status bar
 	// display time-status bar
 	locate(0, VGAY-1);
 	setattr(0x30);
-	puts(itoa(tempset/(60*60), timeset));
+	puts(padl(2, itoa(tempset/(60*60), timeset), '0'));
 	tempset%=(60*60);
 	puts(":");
-	puts(itoa(tempset/60, timeset));
+	puts(padl(2, itoa(tempset/60, timeset), '0'));
 	tempset%=60;
 	puts(":");
-	puts(itoa(tempset, timeset));
+	puts(padl(2, itoa(tempset, timeset), '0'));
 	setattr(0x20);
 	puts("     Threads:");
-	puts(itoa(maxpid+1, timeset));
+	puts(padl(3, itoa(maxpid+1, timeset), ' '));
 	puts(" PID:");
-	puts(itoa(cpid, timeset));
+	puts(padl(3, itoa(cpid, timeset), ' '));
 	puts(" Ticks:");
-	puts(itoa(threadticks, timeset));
+	puts(padl(3, itoa(threadticks, timeset), ' '));
 	puts(" Nice:");
 	puts(itoa(priority[cpid], timeset));
 	
@@ -135,7 +135,7 @@ void displaytime() { //@ time/status bar
 	locate(VGAX-1, 1);
 	puts("|");
 	setattr(0x05);
-	locate(VGAX-(strlen(itoa(dimx, timeset))+2), 0);
+	locate(VGAX-(strlen(itoa(dimx, timeset))+3), 0);
 	puts(itoa(dimx, timeset));
 	locate(VGAX-strlen(itoa(dimy, timeset)), 2);
 	puts(itoa(dimy, timeset));

@@ -29,6 +29,7 @@ extern unsigned short *memsetw(unsigned short *dest, unsigned short val, size_t 
 extern size_t strlen(const char *str);
 extern int pow(int, int);
 extern char* itoa(int, char*);
+extern char* padl(int, char*, char);
 
 // from gdt.c
 extern void gdt_set_gate(int num, unsigned long base, unsigned long limit, unsigned char access, unsigned char gran);

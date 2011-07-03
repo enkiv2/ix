@@ -16,6 +16,18 @@ int pow(int x, int y) {
 	return r;
 }
 
+char* padl(int count, char* buf, char fill) {
+	int i;
+	count-=strlen(buf);
+	for(i=strlen(buf)+count; i>=count; i--) {
+		buf[i]=buf[i-count];
+	}
+	for(i=0; i<count; i++) {
+		buf[i]=fill;
+	}
+	return buf;
+}
+
 char* itoa(int in, char* buf) {
 	int j, i, num;
 	num=in;
