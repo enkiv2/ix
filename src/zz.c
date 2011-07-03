@@ -296,12 +296,13 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
                         			}
                       				locate(0, 1);
 						currcell_old=currcell;
-						currcell=maxcell;
 						maxcell++;
+						currcell=maxcell;
+						get_cell(currcell)->start=get_cell(currcell_old)->end;
 						puts("Good! Now, compose your new cell.");
 						modality=6;
-						for(i=0; i<(get_cell(currcell)->end - get_cell(currcell)->start) && i<512; i++) {
-                                                	editbuf[i]=*((char*)((istream_begin) + get_cell(currcell)->start + i));
+						for(i=0; i<512; i++) {
+                                                	editbuf[i]=0;//*((char*)((istream_begin) + get_cell(currcell)->start + i));
                                         	}
                                         	for (i=i; i<max_edit_size-2; i++) {
                                                 	//editbuf[(get_cell(currcell)->end - get_cell(currcell)->start)]=0;
