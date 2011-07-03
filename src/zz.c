@@ -97,7 +97,6 @@ void init_cells() { //@ Makes a clean zzspace with some default cells
 	}
 	cell->connections[0][0]=1;
 	cell=get_cell(1);
-	//cell->start=15;
 	cell->end=546;
 	for(i=0; i<34; i++) {
 		*((char*)((istream_begin)+cell->start+i))=helpstr[i];
@@ -160,7 +159,6 @@ inline void display_editmenu() {
 }
 
 const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
-			//@ TODO: editing support
 	displaytime();
 	int i;
 	if(zz_mode == zz_display_mode) {
@@ -241,7 +239,8 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 			}
 		} else if(zz_mode==zz_selected_mode) {
 			request_atomicity(1);
-			if(modality==6) {
+			if(modality==6) { // new cell part 2: edit an empty cell's contents
+					  // part 2 has to come before part 1 because of modality switches
 				if(!editpane(5, 5, VGAX-10, VGAY-10, editbuf, max_edit_size-2, 0x02, 0x20)) {
                                         yield();
                                 } else {
@@ -270,7 +269,7 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 					zz_mode=zz_display_mode;
                                 }
 			} else {
-			if(zz_menu_choice==0 || modality==5) {
+			if(zz_menu_choice==0 || modality==5) { // new cell part 1: connection designation
 				if(!modality) {
 			                cls();
                 			display_cells();
@@ -306,11 +305,7 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 						get_cell(currcell)->start=currcell*512;//get_cell(currcell-1)->end + 2;
 						puts("Good! Now, compose your new cell.");
 						modality=6;
-						//for(i=0; i<512; i++) {
-                                                //	editbuf[i]=0;//*((char*)((istream_begin) + get_cell(currcell)->start + i));
-                                        	//}
                                         	for (i=i; i<max_edit_size-2; i++) {
-                                                	//editbuf[(get_cell(currcell)->end - get_cell(currcell)->start)]=0;
                                                 	editbuf[i]=0;
                                         	}
                                        		kb_buf=0;
@@ -318,10 +313,10 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 					}
 				}
 			}
-			if(zz_menu_choice==1 || modality==1) {
+			if(zz_menu_choice==1 || modality==1) { // edit connections
 				relink();
 			}
-			if(zz_menu_choice==2 || modality==2) {
+			if(zz_menu_choice==2 || modality==2) { // edit contents
 				int i;
 				if(!modality) {
 					modality=2;
@@ -342,6 +337,12 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 					*((char*)((istream_begin)+get_cell(currcell)->start+i))=editbuf[i];
 					get_cell(currcell)->end=get_cell(currcell)->start+i;
 					modality=0;		
+				}
+			}
+			if (zz_menu_choice==3) { // remove cell
+				for(i=0; i<max_dims; i++) { // just make this neighbour nobody
+					get_cell(get_cell(currcell)->connections[i][0])->connections[i][1]=get_cell(currcell)->connections[i][1];
+					get_cell(get_cell(currcell)->connections[i][1])->connections[i][0]=get_cell(currcell)->connections[i][0];
 				}
 			}
 			}
