@@ -366,28 +366,32 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 				}
 				if (zz_menu_choice==3) { // remove cell
 					if (!modality) {
+						display_cells();
 						locate(0, 0);
 						puts("Press wasd to choose direction or c to cancel");
 						modality=3;
+						yield();
 					} else if (modality==3) {
 						if(kb_buf=='c')
 							modality=0;
+							yield();
 						if(kb_buf=='w' || kb_buf=='a' || kb_buf=='s' || kb_buf=='d') {
-							currcell_old=currcell;
 							if(kb_buf=='w') 
-								currcell=get_cell(currcell_old)->connections[dimy][0];
+								currcell_old=get_cell(currcell)->connections[dimy][0];
 							if(kb_buf=='a')
-								currcell=get_cell(currcell_old)->connections[dimx][0];
+								currcell_old=get_cell(currcell)->connections[dimx][0];
 							if(kb_buf=='s')
-								currcell=get_cell(currcell_old)->connections[dimy][1];
-							if(kb_buf=='s')
-								currcell=get_cell(currcell_old)->connections[dimx][1];
+								currcell_old=get_cell(currcell)->connections[dimy][1];
+							if(kb_buf=='d')
+								currcell_old=get_cell(currcell)->connections[dimx][1];
 							for(i=0; i<max_dims; i++) { // just make this neighbour nobody
-								get_cell(get_cell(currcell)->connections[i][0])->connections[i][1]=get_cell(currcell)->connections[i][1];
-								get_cell(get_cell(currcell)->connections[i][1])->connections[i][0]=get_cell(currcell)->connections[i][0];
+								get_cell(get_cell(currcell_old)->connections[i][0])->connections[i][1]=get_cell(currcell_old)->connections[i][1];
+								get_cell(get_cell(currcell_old)->connections[i][1])->connections[i][0]=get_cell(currcell_old)->connections[i][0];
 							}
-							currcell=currcell_old;
 							modality=0;
+						} else {
+							kb_buf=0;
+							yield();
 						}
 					}
 				}
