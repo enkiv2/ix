@@ -128,7 +128,7 @@ inline void display_editmenu() {
 		} else setattr(0x07);
 		switch(i) {
 			case 0:
-				puts("New cell");
+				puts("Insert cell");
 				break;
 			case 1:
 				puts("Connect cell");
@@ -137,7 +137,7 @@ inline void display_editmenu() {
 				puts("Edit cell contents");
 				break;
 			case 3:
-				puts("Remove this cell");
+				puts("Remove neighbour");
 				break;
 			case 4:
 				puts("Nevermind");
@@ -283,6 +283,8 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
                                         }
 					locate(0, 0);
         	                        puts("Marked!\n");
+					get_cell(currcell)->connections[dimlink][forelink]=get_cell(currcell_old)->connections[dimlink][forelink];
+					get_cell(get_cell(currcell_old)->connections[dimlink][forelink])->connections[dimlink][!forelink]=currcell;
         	                        get_cell(currcell_old)->connections[dimlink][forelink]=currcell;
 					get_cell(currcell)->connections[dimlink][!forelink]=currcell_old;
         	                        puts("Linked cell #");
