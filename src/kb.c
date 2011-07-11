@@ -68,7 +68,7 @@ void keyboard_handler(struct regs *r) {
 		scancode &= 0x7f; // clear the top bit
 		if (scancode==42 || scancode==54) { // shifts
 			if(!(mode&3)) { // capslock
-				mode^=1;
+				mode|=1;
 			}
 		} else if(scancode==58) { // capslock
 			if(mode&3) {
@@ -83,7 +83,7 @@ void keyboard_handler(struct regs *r) {
 		*  interrupts. */
 		if(scancode==42 || scancode==54) { // shifts
 			if(!(mode&3)) {
-				mode|=1;
+				mode^=1;
 			}
 		}
 		kb_buf=kbdus[scancode];

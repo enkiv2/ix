@@ -36,6 +36,7 @@ int dimx;		//@ current x dimension
 int dimy;		//@ current y dimension
 char editbuf[max_edit_size]; //@ edit buffer
 #else
+extern int currcell;
 extern int dimx;
 extern int dimy;
 #endif

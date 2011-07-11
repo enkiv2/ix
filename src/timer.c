@@ -115,7 +115,7 @@ void displaytime() { //@ time/status bar
 	puts(":");
 	puts(padl(2, itoa(tempset, timeset), '0'));
 	setattr(0x20);
-	puts("     Threads:");
+	puts(" Threads:");
 	puts(padl(3, itoa(maxpid+1, timeset), ' '));
 	puts(" PID:");
 	puts(padl(3, itoa(cpid, timeset), ' '));
@@ -123,6 +123,8 @@ void displaytime() { //@ time/status bar
 	puts(padl(3, itoa(threadticks, timeset), ' '));
 	puts(" Nice:");
 	puts(itoa(priority[cpid], timeset));
+	puts(" CID:");
+	puts(padl(3, itoa(currcell, timeset), ' '));
 	setattr(0x50);
 	puts("Press h for help");
 	locate(VGAX-8, VGAY-1);
