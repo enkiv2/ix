@@ -7,7 +7,6 @@ static void runproc(); // not exported
 void(*proc)(int);
 
 #define DEFAULT_PRIORITY 1
-#define MAX_PROCESSES 512
 #define JIFFY 18.222 //@ We might change the timer frequency later
 
 int atomicity; 	    //@ multithreading disabled?

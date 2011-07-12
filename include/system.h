@@ -57,6 +57,7 @@ extern int spawn(void(*fn)(int));
 extern int fork();
 extern void kill(int);
 extern int renice(int, int);
+#define MAX_PROCESSES 512
 
 // from kb.c
 extern void keyboard_install();
