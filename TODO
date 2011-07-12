@@ -1,5 +1,6 @@
 TODO:
+* get rid of the use of editbuf in cell editing (write to cells directly). Last implementation attempt caused strange problems.
 * replace bkerndev code
 * add disk support of some kind, so that zzstructures and istream may be saved
-* add support for some kind of user scripting
+* finish documenting and writing user scripting environment
 
