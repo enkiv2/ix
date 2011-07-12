@@ -24,7 +24,8 @@ inline void display_cells() { //@ displays based on currcell, in xbar form
 		offset=10;
 	}
 	locate(VGAX/2 - offset/2, 0);
-	write_cell(yneg, offset);
+	if (yneg != curr)
+		write_cell(yneg, offset);
 
 	ypos=get_cell(curr->connections[dimy][1]);
 	offset=ypos->end - ypos->start;
@@ -32,7 +33,8 @@ inline void display_cells() { //@ displays based on currcell, in xbar form
 		offset=10;
 	}
 	locate(VGAX/2 - offset/2, VGAY-2);
-	write_cell(ypos, offset);
+	if (ypos != curr)
+		write_cell(ypos, offset);
 
 	xneg=get_cell(curr->connections[dimx][0]);
 	offset=xneg->end - xneg->start;
@@ -40,7 +42,8 @@ inline void display_cells() { //@ displays based on currcell, in xbar form
 		offset=10;
 	}
 	locate(0, VGAY/2);
-	write_cell(xneg, offset);
+	if (xneg != curr)
+		write_cell(xneg, offset);
 
 	xpos=get_cell(curr->connections[dimx][1]);
 	offset=xpos->end - xpos->start;
@@ -48,7 +51,8 @@ inline void display_cells() { //@ displays based on currcell, in xbar form
 		offset=10;
 	}
 	locate(VGAX-offset, VGAY/2);
-	write_cell(xpos, offset);
+	if (xpos != curr)
+		write_cell(xpos, offset);
 
 	offset=curr->end - curr->start;
 	if(offset > 70) {
