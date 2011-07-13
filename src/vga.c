@@ -11,6 +11,7 @@ const char* editpane(int x, int y, int width, int height, char* text, int maxlen
 		if(kb_buf==27) return text; // ESC
 		if(kb_buf=='\b') {
 			text[strlen(text)-1]=0;
+			kb_buf=0;
 		} else if(strlen(text)<(maxlen-2)) {
 			text[strlen(text)+1]='\0';
 			text[strlen(text)]=kb_buf;

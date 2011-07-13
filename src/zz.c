@@ -156,6 +156,9 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 	if (zz_mode==zz_delay_mode && kb_buf)
 		zz_mode=zz_display_mode;
 	if(zz_mode == zz_display_mode) {
+		if (kb_cmd > 65) { // translate arrow keys to wasd
+			kb_buf=kbcmd_trans[kb_cmd];
+		}
 		if (kb_buf) cls();
 		switch(kb_buf) {
 			case 'i':
@@ -239,6 +242,7 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 		if(zz_mode==zz_display_mode) display_cells(); // hack
 	} else {
 		if(zz_mode==zz_edit_mode) {
+			if(kb_cmd > 65) kb_buf=kbcmd_trans[kb_buf];
 			if(kb_buf) cls();
 			switch(kb_buf) {
 				case 'w':
@@ -323,13 +327,17 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
                 				                forelink=0;
        					                } else if(kb_buf=='a') {
                 				                dimlink=dimx;
-          				                      forelink=0;
+          				                	forelink=0;
    					                } else if(kb_buf=='s') {
-                    					            dimlink=dimy;
+                    						dimlink=dimy;
+								forelink=1;
 							} else if(kb_buf=='d') {
 				                                dimlink=dimx;
 	                			                forelink=1;
-	                        			}
+	                        			} else {
+								kb_buf=0;
+								yield();
+							}
 	                      				locate(0, 1);
 							currcell_old=currcell;
 							currcell=maxcell;
@@ -438,11 +446,15 @@ const inline void relink() {
 			} else if(kb_buf=='d') {
 				dimlink=dimx;
 				forelink=1;
+			} else {
+				zz_mode=zz_edit_mode;
 			}
-			locate(0, 1);
-			puts("Good! Now, navigate to the cell you want to link to and press 'm' to mark it.");
-			currcell_old = currcell;
-			modality=0;
+			if(zz_mode!=zz_edit_mode) {
+				locate(0, 1);
+				puts("Good! Now, navigate to the cell you want to link to and press 'm' to mark it.");
+				currcell_old = currcell;
+				modality=0;
+			}
 		}
 	}
 }

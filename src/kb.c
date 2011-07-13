@@ -1,18 +1,8 @@
-/* bkerndev - Bran's Kernel Development Tutorial
-*  By:   Brandon F. (friesenb@gmail.com)
-*  Desc: Keyboard driver
-*
-*  Notes: No warranty expressed or implied. Use at own risk. */
 #include <system.h>
 #define kb_c
 #include "kb.h"
 
-/* KBDUS means US Keyboard Layout. This is a scancode table
-*  used to layout a standard US keyboard. I have left some
-*  comments in to give you an idea of what key is what, even
-*  though I set it's array index to 0. You can change that to
-*  whatever you want using a macro, if you wish! */
-unsigned char kbdus[128] = {
+unsigned char kbdus_qwerty[128] = {
 	0,  27, '1', '2', '3', '4', '5', '6', '7', '8',	/* 9 */
 	'9', '0', '-', '=', '\b',	/* Backspace */
 	'\t',			/* Tab */
@@ -40,7 +30,7 @@ unsigned char kbdus[128] = {
 	0,
 	0,	/* Right Arrow */
 	'+',
-	79,	/* 79 - End key*/
+	0,	/* 79 - End key*/
 	0,	/* Down Arrow */
 	0,	/* Page Down */
 	0,	/* Insert Key */
@@ -50,6 +40,45 @@ unsigned char kbdus[128] = {
 	0,	/* F12 Key */
 	0,	/* All other keys are undefined */
 };
+unsigned char kbdus_qwerty_shifted[128] = {
+        0,  27, '!', '@', '#', '$', '%', '^', '&', '*', /* 9 */
+        '(', ')', '_', '+', '\b',       /* Backspace */
+        '\t',                   /* Tab */
+        'Q', 'W', 'E', 'R',     /* 19 */
+        'T', 'Y', 'U', 'I', 'O', 'P', '{', '}', '\n',           /* Enter key */
+        0,                      /* 29   - Control */
+        'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':',       /* 39 */
+        '\"', '~', 0,
+	'|', 'Z', 'X', 'C', 'V', 'B', 'N',                     /* 49 */
+        'M', ',', '.', '?',   0,                                        /* Right shift */
+        '*',
+        0,      /* Alt */
+        ' ',    /* Space bar */
+        0,      /* Caps lock */
+        0,      /* 59 - F1 key ... > */
+        0,   0,   0,   0,   0,   0,   0,   0,
+        0,      /* < ... F10 */
+        0,      /* 69 - Num lock*/
+        0,      /* Scroll Lock */
+        0,      /* Home key */
+        0,      /* Up Arrow */
+        0,      /* Page Up */
+        '-',
+        0,      /* Left Arrow */
+        0,                                                                                                       
+        0,      /* Right Arrow */                                                                                
+        '+',
+        79,     /* 79 - End key*/
+        0,      /* Down Arrow */
+        0,      /* Page Down */
+        0,      /* Insert Key */
+        0,      /* Delete Key */
+        0,   0,   0,
+        0,      /* F11 Key */
+        0,      /* F12 Key */
+        0,      /* All other keys are undefined */
+};
+unsigned char* kbcmd_trans = "w00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00s";
 
 /* Handles the keyboard interrupt */
 void keyboard_handler(struct regs *r) {
@@ -60,38 +89,21 @@ void keyboard_handler(struct regs *r) {
 	scancode = inportb(0x60);
 	kb_cmd=scancode;
 	
-	/* If the top bit of the byte we read from the keyboard is
-	*  set, that means that a key has just been released */
-	if (scancode & 0x80) {
-		/* You can use this one to see if the user released the
-		*  shift, alt, or control keys... */
-		scancode &= 0x7f; // clear the top bit
+	if (!(scancode & 0x80)) {
+		//scancode &= 0x7f; // clear the top bit
 		if (scancode==42 || scancode==54) { // shifts
-			if(!(mode&3)) { // capslock
-				mode|=1;
-			}
+			mode|=1;
 		} else if(scancode==58) { // capslock
 			if(mode&3) {
 				mode^=3;
 			} else {
 				mode|=3;
 			}
-		}
-	} else {
-		/* Here, a key was just pressed. Please note that if you
-		*  hold a key down, you will get repeated key press
-		*  interrupts. */
-		if(scancode==42 || scancode==54) { // shifts
-			if(!(mode&3)) {
-				mode^=1;
-			}
-		}
-		kb_buf=kbdus[scancode];
-		if(mode&1) {
-			if(kb_buf>='a' && kb_buf<='z') {
-				kb_buf=(kb_buf-'a')+'A';
-			}
-			if(!(mode&2)) mode^=1; // turn off caps
+		} else if(mode&1) {
+			kb_buf=kbdus_qwerty_shifted[scancode];
+			/*if(!(mode&3)) */ mode&=0xfe; // turn off caps
+		} else {
+			kb_buf=kbdus_qwerty[scancode];
 		}
 	}
 	request_atomicity(0);

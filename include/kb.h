@@ -8,6 +8,7 @@
 void handle_kb();
 
 #ifndef kb_c
+extern unsigned char* kbcmd_trans;
 extern char kb_buf;
 extern char kb_cmd;
 #endif // not kb.c
