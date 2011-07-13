@@ -182,19 +182,19 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 				break;
 			case 'X':
 				dimx--;
-				if(dimx<0) dimx=max_dims;
+				if(dimx<0) dimx=max_dims-1;
 				break;
 			case 'Y':
 				dimy--;
-				if(dimy<0) dimy=max_dims;
+				if(dimy<0) dimy=max_dims-1;
 				break;
 			case 'x':
 				dimx++;
-				if(dimx>max_dims) dimx=0;
+				if(dimx>=max_dims) dimx=0;
 				break;
 			case 'y':
 				dimy++;
-				if(dimy>max_dims) dimy=0;
+				if(dimy>=max_dims) dimy=0;
 				break;
 			case 'z': // swap apparent x/y
 				i=dimy;
