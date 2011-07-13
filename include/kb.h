@@ -25,7 +25,7 @@ char kb_cmd;
 #endif
 
 #ifndef user_kb
-unsigned char kbdus_qwerty[128] = {
+unsigned char kbd[128] = {
         0,  27, '1', '2', '3', '4', '5', '6', '7', '8', /* 9 */
         '9', '0', '-', '=', '\b',       /* Backspace */
         '\t',                   /* Tab */
@@ -63,7 +63,7 @@ unsigned char kbdus_qwerty[128] = {
         0,      /* F12 Key */
         0,      /* All other keys are undefined */
 };
-unsigned char kbdus_qwerty_shifted[128] = {
+unsigned char kbd_shifted[128] = {
         0,  27, '!', '@', '#', '$', '%', '^', '&', '*', /* 9 */
         '(', ')', '_', '+', '\b',       /* Backspace */
         '\t',                   /* Tab */

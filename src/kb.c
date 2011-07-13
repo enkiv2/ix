@@ -23,10 +23,10 @@ void keyboard_handler(struct regs *r) {
 				mode|=3;
 			}
 		} else if(mode&1) {
-			kb_buf=kbdus_qwerty_shifted[scancode];
+			kb_buf=kbd_shifted[scancode];
 			/*if(!(mode&3)) */ mode&=0xfe; // turn off caps
 		} else {
-			kb_buf=kbdus_qwerty[scancode];
+			kb_buf=kbd[scancode];
 		}
 	}
 	request_atomicity(0);
