@@ -9,7 +9,6 @@ typedef struct vgapair_t {
 	char attr;
 } vgapair;
 
-//typedef vgapair[VGAX][VGAY] vgascreen;
 #ifdef vga_c
 vgapair*** screen=(vgapair***)VGAADDR;
 int cursorx;

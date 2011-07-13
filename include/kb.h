@@ -11,6 +11,7 @@ void handle_kb();
 extern unsigned char* kbcmd_trans;
 extern char kb_buf;
 extern char kb_cmd;
+extern void keyboard_install();
 #endif // not kb.c
 
 #ifdef kb_c
@@ -18,13 +19,12 @@ char caps;
 char mode;
 char kb_buf;
 char kb_cmd;
-#ifdef user_kb
+void keyboard_install();
+#ifdef USER_KB
 
 /* write your own keymapping and use the same names */
 
-#endif
-
-#ifndef user_kb
+#else
 unsigned char kbd[128] = {
         0,  27, '1', '2', '3', '4', '5', '6', '7', '8', /* 9 */
         '9', '0', '-', '=', '\b',       /* Backspace */

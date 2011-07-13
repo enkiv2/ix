@@ -1,6 +1,6 @@
-#include <system.h>
 #define kb_c
-#include "kb.h"
+#undef USER_KB
+#include "system.h"
 
 
 /* Handles the keyboard interrupt */
