@@ -1,38 +1,39 @@
+img := img.iso
+srcs := $(wildcard *.c)
+objs := $(srcs:%.c=%.o) 00entry.o
+target := image.elf
+
+%.o : CFLAGS = -Wall -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -I../include/
+
 all: clean src
 
 clean:
-	rm -f *.o image.elf doc.txt
+	-rm -f *.o $(target) $(img) doc.txt
 
-src: clean
-	nasm -felf start.asm -o 00entry.o
-	gcc -Wall -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o gdt.o -I ../include/ gdt.c
-	gcc -Wall -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o isrs.o -I ../include/ isrs.c
-	gcc -Wall -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o util.o -I ../include/ util.c
-	gcc -Wall -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o irq.o -I ../include/ irq.c
-	gcc -Wall -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o timer.o -I ../include/ timer.c
-	gcc -Wall -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o idt.o -I../include/ idt.c
-	gcc -Wall -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o kernel_assert.o -I../include/ kernel_assert.c
-	gcc -Wall -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o kernel_halt.o -I../include/ kernel_halt.s
-	gcc -Wall -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o io.o -I../include/ io.c
-	gcc -Wall -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o ix_main.o -I../include/ ix_main.c
-	gcc -Wall -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o kb.o -I../include/ kb.c
-	gcc -Wall -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o vga.o -I../include/ vga.c
-	gcc -Wall -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o zz.o -I../include/ zz.c
-	gcc -Wall -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o kaukatcr.o -I../include/ kaukatcr.c
-	ld -nostdlib -Tlink.ld *.o -o image.elf
 
-image: clean src
-	mkdir -p mnt
-	sudo mount -o loop fd.img ./mnt/
-	sudo cp menu.lst ./mnt/boot/menu.cfg
-	sudo cp image.elf ./mnt/
-	sudo umount ./mnt/
+00entry.o: start.asm
+	nasm -felf $< -o $@
+
+$(target): link.ld $(objs)
+	ld -nostdlib -Tlink.ld $(objs) -o image.elf
+
+src: $(target)
+
+image: $(img)
+
+$(img): $(target)
+	mkdir -p ./mnt/boot/grub
+	cp /boot/grub/stage2_eltorito ./mnt/boot/grub
+	sudo cp menu.lst ./mnt/boot/grub/menu.lst
+	sudo cp $(target) ./mnt/
+	mkisofs -R -b boot/grub/stage2_eltorito -no-emul-boot \
+         -boot-load-size 4 -boot-info-table -o $(img) mnt
 
 test: image
-	qemu -no-reboot -no-shutdown -fda fd.img
+	qemu -no-reboot -no-shutdown -boot d -cdrom $(img)
 
 install: src
-	sudo cp image.elf /boot/
+	sudo cp $(target) /boot/
 
-
+.PHONY: image test install all src clean
 
