@@ -101,7 +101,7 @@ unsigned char kbd_shifted[128] = {
         0,      /* F12 Key */
         0,      /* All other keys are undefined */
 };
-unsigned char* kbcmd_trans = "w00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00s";
+unsigned char* kbcmd_trans = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00sw00a0d00s";
 #endif // not user_kb
 
 #endif // kb.c
