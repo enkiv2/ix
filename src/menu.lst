@@ -1,7 +1,7 @@
 timeout 5
 
 title   ix
-root (fd0)
-kernel  /ixmage.elf
+# grub infers this for us root (cd)
+kernel  --type=multiboot /image.elf
 boot
 

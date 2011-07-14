@@ -1,0 +1,4 @@
+img.iso
+*.o
+image.elf
+iso/
