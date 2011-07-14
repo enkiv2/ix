@@ -79,18 +79,14 @@ void kmain(unsigned long magic, unsigned long addr) {
 	setattr(0x02);
 	puts("(c) 2010-2011 John Ohno");
 
-	setattr(0x07);
+	setattr(0x70);
 	locate(5, 9);
 	puts("PRESS ANY KEY TO CONTINUE");
 	while(kb_buf=='\0') { 
-		setattr(0x70);
+		setattr(color<<4 | color>>4);
 		locate(5, 9);
 		puts("PRESS ANY KEY TO CONTINUE");
-		for (i=0; i<WAIT; i++) { }
-		setattr(0x07);
-		locate(5, 9);
-		puts("PRESS ANY KEY TO CONTINUE");
-		for (i=0; i<WAIT; i++) { }
+		timer_wait(9);
 	}
 	
 	init_cells();	

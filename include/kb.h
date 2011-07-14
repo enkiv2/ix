@@ -10,16 +10,16 @@ void kb_clear();
 
 #ifndef kb_c
 extern unsigned char* kbcmd_trans;
-extern char kb_buf;
-extern char kb_cmd;
+extern volatile char kb_buf;
+extern volatile char kb_cmd;
 extern void keyboard_install();
 #endif // not kb.c
 
 #ifdef kb_c
 char caps;
 char mode;
-char kb_buf;
-char kb_cmd;
+volatile char kb_buf;
+volatile char kb_cmd;
 void keyboard_install();
 #ifdef USER_KB
 
