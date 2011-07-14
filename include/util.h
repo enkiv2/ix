@@ -10,5 +10,7 @@ extern size_t strlen(const char *str);
 extern int pow(int, int);
 extern char* itoa(int, char*);
 extern char* padl(int, char*, char);
+int abs(int n);
+int strcmp(char* needle, char* haystack);
 
 #endif

@@ -1,9 +1,24 @@
-/* bkerndev - Bran's Kernel Development Tutorial
-*  By:   Brandon F. (friesenb@gmail.com)
-*  Desc: Main.c: C code entry.
-*
-*  Notes: No warranty expressed or implied. Use at own risk. */
 #include <system.h>
+
+int abs(int n) {
+        if (n>0) return n;
+        return -n;
+}
+
+int strcmp(char* needle, char* haystack) {
+        int i=0;
+        int l=strlen(haystack);
+        if(strlen(needle)<l)
+                l=strlen(needle);
+        for(i=0; i<l; i++) {
+                if(needle[i]>haystack[i])
+                        return 1;
+                if(needle[i]<haystack[i])
+                        return -1;
+        }
+        return 0;
+}
+
 
 int pow(int x, int y) {
 	int r;
