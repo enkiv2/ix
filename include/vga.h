@@ -30,6 +30,7 @@ void write(char c);
 void putch(char c);
 void puts(char* c);
 void scroll(int numlines);
+void invertattr();
 void setattr(char attr);
 void cls();
 #endif

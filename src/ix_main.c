@@ -83,7 +83,7 @@ void kmain(unsigned long magic, unsigned long addr) {
 	locate(5, 9);
 	puts("PRESS ANY KEY TO CONTINUE");
 	while(kb_buf=='\0') { 
-		setattr(color<<4 | color>>4);
+		invertattr();
 		locate(5, 9);
 		puts("PRESS ANY KEY TO CONTINUE");
 		timer_wait(9);

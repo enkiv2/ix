@@ -92,6 +92,10 @@ void scroll(int numlines) { //@
 	}
 }
 
+void invertattr() { //@ inverts the current colour scheme
+	setattr(color<<4|color>>4);
+}
+
 void setattr(char attr) { //@ attr is in vga color mode format
 	color = attr;
 }
