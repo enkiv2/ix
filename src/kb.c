@@ -10,9 +10,7 @@ void keyboard_handler(struct regs *r) {
 	
 	/* Read from the keyboard's data buffer */
 	scancode = inportb(0x60);
-	kb_cmd=0;
 	if (!(scancode & 0x80)) {
-		kb_cmd=scancode;
 		if (scancode==42 || scancode==54) { // shifts
 			mode|=1;
 		} else if(scancode==58) { // capslock
@@ -27,6 +25,8 @@ void keyboard_handler(struct regs *r) {
 		} else {
 			kb_buf=kbd[scancode];
 		}
+	} else {
+		kb_cmd=scancode&0x7f;
 	}
 	request_atomicity(0);
 }
