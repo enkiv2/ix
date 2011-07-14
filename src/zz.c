@@ -283,7 +283,7 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
                                                         *((char*)((istream_begin)+get_cell(currcell)->start+i))=editbuf[i];
                                                 } else {
                                                         *((char*)((istream_begin)+get_cell(currcell)->start+i))=editbuf[i];
-                                                        get_cell(currcell)->end=get_cell(currcell)->start+i;
+                                                        get_cell(currcell)->end=get_cell(currcell)->start+strlen(editbuf);
                                                         modality=0;
                                                         break;
                                                 }
@@ -374,7 +374,7 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 						for(i=0; i<max_edit_size-2 && editbuf[i]!=0; i++) 
 							*((char*)((istream_begin)+get_cell(currcell)->start+i))=editbuf[i];
 						*((char*)((istream_begin)+get_cell(currcell)->start+i))=editbuf[i];
-						get_cell(currcell)->end=get_cell(currcell)->start+i;
+						get_cell(currcell)->end=get_cell(currcell)->start+strlen(editbuf);
 						modality=0;		
 					}
 				}

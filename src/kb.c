@@ -24,7 +24,7 @@ void keyboard_handler(struct regs *r) {
 			}
 		} else if(mode&1) {
 			kb_buf=kbd_shifted[scancode];
-			/*if(!(mode&3)) */ mode&=0xfe; // turn off caps
+		if(!(mode&2))  mode&=0xfe; // turn off caps
 		} else {
 			kb_buf=kbd[scancode];
 		}
