@@ -20,6 +20,8 @@ push: clean update
 update:
 	git pull origin master 
 
+pull: update
+
 install:
 	make -C src/ install
 	@echo
