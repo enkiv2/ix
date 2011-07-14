@@ -10,7 +10,7 @@ void keyboard_handler(struct regs *r) {
 	
 	/* Read from the keyboard's data buffer */
 	scancode = inportb(0x60);
-	kb_cmd=scancode;
+	kb_cmd=scancode&0x7f;
 	
 	if (!(scancode & 0x80)) {
 		//scancode &= 0x7f; // clear the top bit
