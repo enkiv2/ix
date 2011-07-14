@@ -118,7 +118,6 @@ inline void display_editmenu() {
 	locate(1, 1);
 	puts("Edit menu:");
 	locate(0, 2);
-	puts("Use wasd to navigate.");
 	
 	if(zz_menu_choice>=5 || zz_menu_choice < 0) {
 		zz_menu_choice=0;
@@ -391,7 +390,7 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 					if (!modality) {
 						display_cells();
 						locate(0, 0);
-						puts("Press wasd to choose direction or c to cancel");
+						puts("Press c to cancel");
 						modality=3;
 						yield();
 					} else if (modality==3) {
