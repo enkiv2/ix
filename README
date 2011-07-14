@@ -15,7 +15,7 @@ and sudo, and that you have a loop device. qemu, sudo, and the loop device are
 used only in 'make test', so if you just want to build the kernel, you only
 need gcc and nasm.
 
-The generated kernel image is called 'image.elf'. It is stored in src/. It
+The generated kernel image is called 'ixmage.elf'. It is stored in src/. It
 is a multiboot-compatible elf-format executable.
 
 Running 'make install' on a system with sudo will rebuild the image and copy it

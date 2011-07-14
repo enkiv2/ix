@@ -1,7 +1,7 @@
 all: clean src
 
 clean:
-	rm -f *.o image.elf doc.txt
+	rm -f *.o ixmage.elf doc.txt
 
 src: clean
 	nasm -felf start.asm -o 00entry.o
@@ -19,20 +19,20 @@ src: clean
 	gcc -Wall -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o vga.o -I../include/ vga.c
 	gcc -Wall -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o zz.o -I../include/ zz.c
 	gcc -Wall -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -c -o kaukatcr.o -I../include/ kaukatcr.c
-	ld -nostdlib -Tlink.ld *.o -o image.elf
+	ld -nostdlib -Tlink.ld *.o -o ixmage.elf
 
 image: clean src
 	mkdir -p mnt
 	sudo mount -o loop fd.img ./mnt/
 	sudo cp menu.lst ./mnt/boot/menu.cfg
-	sudo cp image.elf ./mnt/
+	sudo cp ixmage.elf ./mnt/
 	sudo umount ./mnt/
 
 test: image
 	qemu -no-reboot -no-shutdown -fda fd.img
 
 install: src
-	sudo cp image.elf /boot/
+	sudo cp ixmage.elf /boot/
 
 
 
