@@ -2,6 +2,6 @@ timeout 5
 
 title   ix
 # grub infers this for us root (cd)
-kernel  /image.elf
+kernel  --type=multiboot /image.elf
 boot
 

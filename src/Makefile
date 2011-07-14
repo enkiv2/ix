@@ -1,6 +1,6 @@
 img := img.iso
 srcs := $(wildcard *.c *.s)
-objs := $(srcs:%.c=%.o) 00entry.o
+objs := 00entry.o $(srcs:%.c=%.o)
 objs := $(objs:%.s=%.o)
 target := image.elf
 AS=$(CC)
@@ -13,10 +13,10 @@ clean:
 	-rm -f $(objs) $(target) $(img) doc.txt
 
 00entry.o: start.asm
-	nasm -felf $< -o $@
+	nasm -f elf32 $< -o $@
 
 $(target): link.ld $(objs)
-	ld -nostdlib -Tlink.ld $(objs) -o image.elf
+	ld -nostdlib -Tlink.ld $(objs) -o $(target)
 
 src: $(target)
 

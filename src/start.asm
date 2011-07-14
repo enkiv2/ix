@@ -10,6 +10,7 @@
 
 ; entry.asm begins here
 
+
 ; Multiboot header
 MULTIBOOT_PAGE_ALIGN   equ 1<<0
 MULTIBOOT_MEMORY_INFO  equ 1<<1
