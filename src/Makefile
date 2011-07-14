@@ -25,8 +25,8 @@ image: $(img)
 $(img): $(target) menu.lst
 	mkdir -p iso/boot/grub
 	cp /boot/grub/stage2_eltorito iso/boot/grub
-	sudo cp menu.lst iso/boot/grub/menu.lst
-	sudo cp $(target) iso/
+	cp menu.lst iso/boot/grub/menu.lst
+	cp $(target) iso/
 	mkisofs -R -b boot/grub/stage2_eltorito -no-emul-boot \
          -boot-load-size 4 -boot-info-table -o $(img) iso/
 
