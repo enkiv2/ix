@@ -314,6 +314,7 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
                 				puts("Indicate direction of connection, or c to cancel");
                					modality=5;
      					} else {
+						if(kb_cmd > 65) kb_buf=kbcmd_trans[kb_buf];
 				                if(kb_buf!='w' && kb_buf!='a' && kb_buf!='s' && kb_buf!='d' && kb_buf!='c') {
         				                timer_wait(1);
                 				        displaytime();
@@ -386,6 +387,7 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 						modality=3;
 						yield();
 					} else if (modality==3) {
+						if(kb_cmd > 65) kb_buf=kbcmd_trans[kb_buf];
 						if(kb_buf=='c')
 							modality=0;
 							yield();
@@ -426,6 +428,7 @@ const inline void relink() {
 		puts("Indicate direction of connection, or c to cancel");
 		modality=1;
 	} else {
+		if(kb_cmd > 65) kb_buf=kbcmd_trans[kb_buf];
 		if(kb_buf!='w' && kb_buf!='a' && kb_buf!='s' && kb_buf!='d' && kb_buf!='c') {
 			timer_wait(1);
 			displaytime();
