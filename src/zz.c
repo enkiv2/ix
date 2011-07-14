@@ -237,8 +237,7 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 				zz_mode=zz_delay_mode;
 				break;
 		}
-		kb_buf=0;
-		kb_cmd=0;
+		kb_clear();
 		if(zz_mode==zz_display_mode) display_cells(); // hack
 	} else {
 		if(zz_mode==zz_edit_mode) {
@@ -248,28 +247,24 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 				case 'w':
 					zz_menu_choice--;
 					cls();
-					kb_buf='\0';
-					kb_cmd=0;
+					kb_clear();
 					display_editmenu();
 					break;
 				case 's':
 					zz_menu_choice++;
 					cls();
-					kb_buf='\0';
-					kb_cmd=0;
+					kb_clear();
 					display_editmenu();
 					break;
 				case 'a':
 					cls();
-					kb_buf='\0';
-					kb_cmd=0;
+					kb_clear();
 					zz_mode=zz_display_mode;
 					break;
 				case 'd':
 				case '\n':
 					cls();
-					kb_buf='\0';
-					kb_cmd=0;
+					kb_clear();
 					zz_mode=zz_selected_mode;
 					break;
 				default:
@@ -340,8 +335,7 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 				                                dimlink=dimx;
 	                			                forelink=1;
 	                        			} else {
-								kb_buf=0;
-								kb_cmd=0;
+								kb_clear();
 								yield();
 							}
 	                      				locate(0, 1);
@@ -354,8 +348,7 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 	                                        	for (i=i; i<max_edit_size-2; i++) {
 	                                                	editbuf[i]=0;
 	                                        	}
-	                                       		kb_buf=0;
-							kb_cmd=0;
+							kb_clear();
 						}
 					}
 				}
@@ -373,8 +366,7 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 						for (i=i; i<max_edit_size-2; i++) {
 							editbuf[i]=0;
 						}
-						kb_buf=0;
-						kb_cmd=0;
+						kb_clear();
 					}
 					if(!editpane(5, 5, VGAX-10, VGAY-10, editbuf, max_edit_size-2, 0x02, 0x20)) {
 						yield();
@@ -413,8 +405,7 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 							}
 							modality=0;
 						} else {
-							kb_buf=0;
-							kb_cmd=0;
+							kb_clear();
 							yield();
 						}
 					}

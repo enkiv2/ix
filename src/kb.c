@@ -2,7 +2,10 @@
 #undef USER_KB
 #include "system.h"
 
-
+void kb_clear() {
+	kb_buf=0;
+	kb_cmd=0;
+}
 /* Handles the keyboard interrupt */
 void keyboard_handler(struct regs *r) {
 	request_atomicity(1);

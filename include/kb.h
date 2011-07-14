@@ -6,6 +6,7 @@
 
 #define kb_port 0x60
 void handle_kb();
+void kb_clear();
 
 #ifndef kb_c
 extern unsigned char* kbcmd_trans;
