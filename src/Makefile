@@ -3,8 +3,8 @@ srcs := $(wildcard *.c *.s)
 objs := $(srcs:%.c=%.o) 00entry.o
 objs := $(objs:%.s=%.o)
 target := image.elf
-
-%.o : CFLAGS = -Wall -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -I../include/
+CFLAGS = -Wall -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -I../include/
+ASFLAGS = -Wall -mtune=i386 -nostdlib -nostdinc -I../include/
 
 all: src
 
