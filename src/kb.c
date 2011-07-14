@@ -10,10 +10,9 @@ void keyboard_handler(struct regs *r) {
 	
 	/* Read from the keyboard's data buffer */
 	scancode = inportb(0x60);
-	kb_cmd=scancode&0x7f;
-	
+	kb_cmd=0;
 	if (!(scancode & 0x80)) {
-		//scancode &= 0x7f; // clear the top bit
+		kb_cmd=scancode;
 		if (scancode==42 || scancode==54) { // shifts
 			mode|=1;
 		} else if(scancode==58) { // capslock
