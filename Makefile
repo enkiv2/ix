@@ -18,6 +18,7 @@ push: clean update
 	git push origin master
 
 update:
+	rm src/fd.img
 	git pull origin master 
 
 pull: update
