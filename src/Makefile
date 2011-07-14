@@ -1,15 +1,15 @@
 img := img.iso
-srcs := $(wildcard *.c)
+srcs := $(wildcard *.c *.s)
 objs := $(srcs:%.c=%.o) 00entry.o
+objs := $(objs:%.s=%.o)
 target := image.elf
 
 %.o : CFLAGS = -Wall -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -I../include/
 
-all: clean src
+all: src
 
 clean:
-	-rm -f *.o $(target) $(img) doc.txt
-
+	-rm -f $(objs) $(target) $(img) doc.txt
 
 00entry.o: start.asm
 	nasm -felf $< -o $@
@@ -21,7 +21,7 @@ src: $(target)
 
 image: $(img)
 
-$(img): $(target)
+$(img): $(target) menu.lst
 	mkdir -p ./mnt/boot/grub
 	cp /boot/grub/stage2_eltorito ./mnt/boot/grub
 	sudo cp menu.lst ./mnt/boot/grub/menu.lst

@@ -1,7 +1,7 @@
 timeout 5
 
 title   ix
-root (fd0)
+# grub infers this for us root (cd)
 kernel  /image.elf
 boot
 
