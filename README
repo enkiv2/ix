@@ -11,9 +11,9 @@ Ix [n]:
 	2) a standalone zigzag implementation for the x86
 
 The build system assumes you have a reasonably new version of gcc, qemu, nasm, 
-and sudo, and that you have a loop device. qemu, sudo, and the loop device are
-used only in 'make test', so if you just want to build the kernel, you only
-need gcc and nasm.
+and sudo, and a reasonably recent cdrtools. qemu and cdrtools are used only in 
+'make test', so if you just want to build the kernel, you only need gcc and 
+nasm. sudo is used only in 'make install', which you shouldn't do.
 
 The generated kernel image is called 'ixmage.elf'. It is stored in src/. It
 is a multiboot-compatible elf-format executable.
