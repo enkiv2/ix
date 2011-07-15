@@ -26,7 +26,7 @@ pull: update
 install:
 	make -C src/ install
 	@echo
-	@echo "Make sure to edit your grub configuration to include /boot/image.elf if you have not yet done so!"
+	@echo "Make sure to edit your grub configuration to include /boot/ixmage.elf if you have not yet done so!"
 	@echo
 
 doc:
