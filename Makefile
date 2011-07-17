@@ -15,11 +15,11 @@ clean:
 
 push: clean update
 	git commit -a
-	git push origin master
+	git push origin disk
 
 update:
 	rm -f src/fd.img
-	git pull origin master 
+	git pull origin disk
 
 pull: update
 

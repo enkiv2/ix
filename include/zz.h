@@ -20,6 +20,7 @@ typedef struct zz_t {
 	int connections[max_dims][2];
 	int start; /* refer to istream indices */
 	int end;
+	int dirtybits; /* //@ bit 0 is dirty, bit 1 is deleted */
 } zzcell;
 
 #define istream_begin cells_begin + sizeof(zzcell) * max_cells

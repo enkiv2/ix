@@ -222,6 +222,8 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 			case 'm':
 				locate(0, 0);
 				puts("Marked!\n");
+				get_cell(currcell_old)->dirtybit|=1;
+				get_cell(currcell)->dirtybit|=1;
 				get_cell(currcell_old)->connections[dimlink][forelink]=currcell;
 				get_cell(currcell)->connections[dimlink][!forelink]=currcell_old;
 				puts("Linked cell #");
@@ -290,6 +292,9 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
                                         }
 					locate(0, 0);
         	                        puts("Marked!\n");
+					get_cell(currcell)->dirtybit|=1;
+					get_cell(get_cell(currcell_old)->connections[dimlink][forelink])->dirtybit|=1;
+					get_cell(currcell_old)->dirtybit|=1;
 					get_cell(currcell)->connections[dimlink][forelink]=get_cell(currcell_old)->connections[dimlink][forelink];
 					get_cell(get_cell(currcell_old)->connections[dimlink][forelink])->connections[dimlink][!forelink]=currcell;
         	                        get_cell(currcell_old)->connections[dimlink][forelink]=currcell;
@@ -375,6 +380,7 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 							*((char*)((istream_begin)+get_cell(currcell)->start+i))=editbuf[i];
 						*((char*)((istream_begin)+get_cell(currcell)->start+i))=editbuf[i];
 						get_cell(currcell)->end=get_cell(currcell)->start+strlen(editbuf);
+						get_cell(currcell)->dirtybit|=1;
 						modality=0;		
 					}
 				}
@@ -400,9 +406,12 @@ const void nav_cells(int pid) { 	//@ handle navigation, display, and editing
 							if(kb_buf=='d')
 								currcell_old=get_cell(currcell)->connections[dimx][1];
 							for(i=0; i<max_dims; i++) { // just make this neighbour nobody
+								get_cell(get_cell(currcell_old)->connections[i][0])->dirtybit|=1;
+								get_cell(get_cell(currcell_old)->connections[i][1])->dirtybit|=1;
 								get_cell(get_cell(currcell_old)->connections[i][0])->connections[i][1]=get_cell(currcell_old)->connections[i][1];
 								get_cell(get_cell(currcell_old)->connections[i][1])->connections[i][0]=get_cell(currcell_old)->connections[i][0];
 							}
+							get_cell(currcell_old)->dirtybit|=3;
 							modality=0;
 						} else {
 							kb_clear();

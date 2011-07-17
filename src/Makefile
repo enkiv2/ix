@@ -34,7 +34,7 @@ test: image
 	qemu -no-reboot -no-shutdown -boot d -cdrom $(img)
 
 install: src
-	sudo cp $(target) /boot/
+	@echo "Don't do this! Read the README for more information"
 
 .PHONY: image test install all src clean
 
