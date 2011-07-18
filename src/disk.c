@@ -3,26 +3,7 @@
  *	Licensed under the GNU LGPL
  */
 
-
-
-#define ENFS_PARTITION_CODE 0x30
-
-#define MAX_CYLINDERS 65535
-#define HEADS_PER_CYLINDER 16
-#define SECTORS_PER_TRACK 255
-
-#define DRIVE_AND_HEAD_PORT 0x1f6
-#define SECTOR_COUNT_PORT 0x1f2
-#define SECTOR_NUMBER_PORT 0x1f3
-#define CYLINDER_LOW_PORT 0x1f4
-#define CYLINDER_HIGH_PORT 0x1f5
-#define COMMAND_PORT 0x1f7
-#define STATUS_PORT 0x1f7
-
-#define DATA_PORT 0x1f0
-
-#define COMMAND_READ_WITH_RETRY 0x20
-#define COMMAND_WRITE_WITH_RETRY 0x30
+#include <disk.h>
 
 typedef unsigned long  LBA;
 
