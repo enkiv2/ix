@@ -12,11 +12,14 @@
 #define DATA_PORT 0x1f0
 #define COMMAND_READ_WITH_RETRY 0x20
 #define COMMAND_WRITE_WITH_RETRY 0x30
+
+typedef unsigned long  LBA;
+
 int HD_writed(unsigned int drive, unsigned int head, unsigned long cylinder, unsigned int sector, void* data) ;
-int HD_write(unsigned int drive, LBA lba, void* data, unsigned int start_head=0, unsigned int end_head=HEADS_PER_CYLINDER, unsigned int start_cylinder=0, unsigned int end_cylinder=MAX_CYLINDERS, unsigned int start_sector=0, unsigned int end_sector=SECTORS_PER_TRACK) ;
+int HD_write(unsigned int drive, LBA lba, void* data, unsigned int start_head, unsigned int end_head, unsigned int start_cylinder, unsigned int end_cylinder, unsigned int start_sector, unsigned int end_sector) ;
 LBA chs2lba(unsigned int head, unsigned int cylinder, unsigned int sector) ;
-void* HD_readd(unsigned int drive, unsigned int head, unsigned long cylinder, unsigned int sector, unsigned int len, unsigned int start=0) ;
-void* HD_read(unsigned int drive, LBA lba, unsigned int len, unsigned int start_head=0, unsigned int end_head=HEADS_PER_CYLINDER, unsigned int start_cylinder=0, unsigned int end_cylinder=MAX_CYLINDERS, unsigned int start_sector=0, unsigned int end_sector=SECTORS_PER_TRACK) ;
+void* HD_readd(unsigned int drive, unsigned int head, unsigned long cylinder, unsigned int sector, unsigned int len, unsigned int start) ;
+void* HD_read(unsigned int drive, LBA lba, unsigned int len, unsigned int start_head, unsigned int end_head, unsigned int start_cylinder, unsigned int end_cylinder, unsigned int start_sector, unsigned int end_sector) ;
 void init() ;
 void lba2chs (in LBA lba, out unsigned int head, out unsigned int cylinder, out unsigned int sector) ;
 void opIndexApply(unsigned char value, unsigned long i) ;

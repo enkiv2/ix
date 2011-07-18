@@ -4,7 +4,7 @@ objs := 00entry.o $(srcs:%.c=%.o)
 objs := $(objs:%.s=%.o)
 target := ixmage.elf
 AS=$(CC)
-CFLAGS = -Wall -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -I../include/
+CFLAGS = -Wall -std=gnu99 -mtune=i386 -mno-mmx -mno-3dnow -mno-sse2 -mno-sse3 -mno-sse -mno-tls-direct-seg-refs -nostdlib -nostdinc -ffreestanding -I../include/
 ASFLAGS := $(CFLAGS) -c
 
 all: src
