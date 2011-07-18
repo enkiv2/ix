@@ -18,9 +18,7 @@ nasm. sudo is used only in 'make install', which you shouldn't do.
 The generated kernel image is called 'ixmage.elf'. It is stored in src/. It
 is a multiboot-compatible elf-format executable.
 
-Running 'make install' on a system with sudo will rebuild the image and copy it
-to /boot. It assumes that you have already modified your grub configuration.
-
+DO NOT RUN 'make install'. THIS BRANCH *WILL* HASH YOUR DISK.
 Notes:
 
 * Several files in this release were taken from or adapted from files from
