@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Ix by enkiv2</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Ix</h1>
+        <p>A bootable standalone zzstructure editor (or zigzag-based operating system) for the x86</p>
+
+        <p class="view"><a href="https://github.com/enkiv2/ix">View the Project on GitHub <small>enkiv2/ix</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/enkiv2/ix/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/enkiv2/ix/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/enkiv2/ix">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p><img src="https://github.com/enkiv2/ix/raw/master/ix-logo.png" width="113" height="152" alt="logo"></p>
+
+<p>Ix [n]:</p>
+
+<pre><code>1) one who is not able satisfactorily to explain what a Hrung is, nor 
+why it should choose to collapse on Betelgeuse Seven
+
+2) a standalone zigzag implementation for the x86
+</code></pre>
+
+<p>The build system assumes you have a reasonably new version of gcc, qemu, nasm, 
+and sudo, and a reasonably recent cdrtools. qemu and cdrtools are used only in 
+'make test', so if you just want to build the kernel, you only need gcc and 
+nasm. sudo is used only in 'make install', which you shouldn't do.</p>
+
+<p>The generated kernel image is called 'ixmage.elf'. It is stored in src/. It
+is a multiboot-compatible elf-format executable.</p>
+
+<p>Running 'make install' on a system with sudo will rebuild the image and copy it
+to /boot. It assumes that you have already modified your grub configuration.</p>
+
+<p>Notes:</p>
+
+<ul>
+<li><p>Several files in this release were taken from or adapted from files from
+a previous OS project, Project XANA. This project was licensed under the 
+GPL v.2. Some of those files were taken from its parent project, OSD
+(also called OCD), by Alexander Panek. That project was under the ZLIB license.
+The files from OSD have their own copyright notice. Those files that are unique
+to Ix may not contain a notice.</p></li>
+<li><p>One file was taken from an excerpt from DJGPP, and parts of another were 
+adapted from GRUB. Both projects are licensed under the GPL2. The portions so
+indicated were not long enough to constitute a derivative work.</p></li>
+<li><p>The file multiboot.h is taken directly from GRUB, with copyright notice intact.</p></li>
+<li><p>Some files are taken from bkerndev, Bren's Kernel Development Tutorial. These
+files have their ownership notices intact. We are working on replacing all 
+the functionality in these files. </p></li>
+<li><p>The current version of ix is always at git://github.com/enkiv2/ix.git</p></li>
+<li><p>The current version as of midnight EST is always at 
+<a href="http://namcub.accela-labs.com/projects/ix">http://namcub.accela-labs.com/projects/ix</a></p></li>
+<li><p>The Ix project has a presence on the web at
+<a href="http://namcub.accela-labs.com/projects/ix.web">http://namcub.accela-labs.com/projects/ix.web</a></p></li>
+</ul>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/enkiv2">enkiv2</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
